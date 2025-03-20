@@ -1,0 +1,30 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Items API
+  description: Template of API using items as an example
+paths:
+  /items:
+    get:
+      description: Returns a list of items
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+components:
+  schemas:
+    Item:
+      type: object
+      required:
+        - id
+        - description
+      properties:
+        id:
+          type: long
+        content:
+          type: string
