@@ -15,7 +15,7 @@ public class ItemsWebAdapterTest {
         //when items are requested
         var items = adapter.getItems();
 
-        //then items are returned
+        //then expected items are returned
         assertEquals(createTestItemDTOs(), items);
     }
 
