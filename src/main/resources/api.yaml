@@ -3,10 +3,15 @@ info:
   version: 1.0.0
   title: Items API
   description: Template of API using items as an example
+tags:
+  - name: itemsAPI
 paths:
   /items:
     get:
+      operationId: getItems
       description: Returns a list of items
+      tags:
+        - items
       responses:
         '200':
           description: Successful response
@@ -15,16 +20,16 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Item'
+                  $ref: '#/components/schemas/ItemDTO'
 components:
   schemas:
-    Item:
+    ItemDTO:
       type: object
       required:
         - id
-        - description
+        - name
       properties:
         id:
           type: long
-        content:
+        name:
           type: string
