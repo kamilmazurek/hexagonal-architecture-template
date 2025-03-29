@@ -10,7 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItemDTOs;
 
-public class ItemsWebControllerTest {
+public class ItemsControllerTest {
 
     @Test
     void shouldReturnItems() {
@@ -24,7 +24,7 @@ public class ItemsWebControllerTest {
         //when items are requested
         var response = controller.getItems();
 
-        //then response containing items is returned
+        //then response containing expected items is returned
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(createTestItemDTOs(), response.getBody());
 
