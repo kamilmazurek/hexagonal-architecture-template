@@ -1,19 +1,28 @@
 package template.adapter.web;
 
-import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 import template.api.model.ItemDTO;
+import template.application.domain.model.Item;
+import template.application.domain.service.ItemsService;
 
 import java.util.List;
 
-@Service
+@Component
+@AllArgsConstructor
 public class ItemsWebAdapter {
 
+    private ItemsService service;
+
+    private final ModelMapper mapper = new ModelMapper();
+
     public List<ItemDTO> getItems() {
-        return List.of(
-                new ItemDTO().id(1L).name("Item A"),
-                new ItemDTO().id(2L).name("Item B"),
-                new ItemDTO().id(3L).name("Item C")
-        );
+        return service.getItems().stream().map(this::toDTO).toList();
+    }
+
+    private ItemDTO toDTO(Item item) {
+        return mapper.map(item, ItemDTO.class);
     }
 
 }

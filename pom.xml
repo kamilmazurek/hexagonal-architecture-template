@@ -18,6 +18,7 @@
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
         <springdoc-openapi-ui.version>1.8.0</springdoc-openapi-ui.version>
         <openapi-generator-maven-plugin.version>7.9.0</openapi-generator-maven-plugin.version>
+        <modelmapper.version>3.2.2</modelmapper.version>
     </properties>
     <dependencies>
         <!-- spring -->
@@ -45,6 +46,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${modelmapper.version}</version>
         </dependency>
         <!-- test -->
         <dependency>
