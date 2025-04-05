@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: test
+  datasource:
+    url: jdbc:h2:mem:layered-test
+  jpa:
+    defer-datasource-initialization: true
+  sql:
+    init:
+      data-locations: optional:classpath*:data-test.sql

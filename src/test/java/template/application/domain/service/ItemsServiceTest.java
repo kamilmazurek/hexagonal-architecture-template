@@ -1,17 +1,24 @@
-package template.application.service;
+package template.application.domain.service;
 
 import org.junit.jupiter.api.Test;
+import template.adapter.persistence.ItemsRepositoryAdapter;
 import template.application.domain.service.ItemsService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItems;
 
 public class ItemsServiceTest {
 
     @Test
     void shouldReturnItems() {
-        //given service
-        var service = new ItemsService();
+        //given adapter
+        var adapter = mock(ItemsRepositoryAdapter.class);
+        when(adapter.getItems()).thenReturn(createTestItems());
+
+        //and service
+        var service = new ItemsService(adapter);
 
         //when items are requested
         var items = service.getItems();

@@ -1,21 +1,22 @@
 package template.application.domain.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import template.application.domain.model.Item;
-import template.application.port.ItemsPort;
+import template.application.port.ItemsRepositoryPort;
+import template.application.port.ItemsWebPort;
 
 import java.util.List;
 
 @Service
-public class ItemsService implements ItemsPort {
+@AllArgsConstructor
+public class ItemsService implements ItemsWebPort {
+
+    private ItemsRepositoryPort port;
 
     @Override
     public List<Item> getItems() {
-        return List.of(
-                Item.builder().id(1L).name("Item A").build(),
-                Item.builder().id(2L).name("Item B").build(),
-                Item.builder().id(3L).name("Item C").build()
-        );
+        return port.getItems();
     }
 
 }

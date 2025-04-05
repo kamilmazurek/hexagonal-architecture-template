@@ -1,5 +1,6 @@
 package template.util;
 
+import template.adapter.persistence.model.ItemEntity;
 import template.api.model.ItemDTO;
 import template.application.domain.model.Item;
 
@@ -22,5 +23,14 @@ public class TestItems {
 
         return List.of(itemA, itemB, itemC);
     }
+
+    public static List<ItemEntity> createTestItemEntities() {
+        var itemA = ItemEntity.builder().id(1L).name("Item A").build();
+        var itemB = ItemEntity.builder().id(2L).name("Item B").build();
+        var itemC = ItemEntity.builder().id(3L).name("Item C").build();
+
+        return List.of(itemA, itemB, itemC);
+    }
+
 
 }
