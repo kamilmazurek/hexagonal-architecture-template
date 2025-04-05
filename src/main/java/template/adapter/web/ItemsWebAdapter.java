@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import template.api.model.ItemDTO;
 import template.application.domain.model.Item;
-import template.application.port.ItemsPort;
+import template.application.port.ItemsWebPort;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ItemsWebAdapter {
 
-    private ItemsPort port;
+    private ItemsWebPort port;
 
     private final ModelMapper mapper = new ModelMapper();
 

@@ -1,0 +1,4 @@
+spring:
+  sql:
+    init:
+      data-locations: optional:classpath*:data-dev.sql

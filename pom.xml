@@ -20,6 +20,23 @@
         <openapi-generator-maven-plugin.version>7.9.0</openapi-generator-maven-plugin.version>
         <modelmapper.version>3.2.2</modelmapper.version>
     </properties>
+    <profiles>
+        <profile>
+            <id>default</id>
+            <properties>
+                <activeProfile>default</activeProfile>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <activeProfile>dev</activeProfile>
+            </properties>
+        </profile>
+    </profiles>
     <dependencies>
         <!-- spring -->
         <dependency>
@@ -29,6 +46,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <!-- api -->
         <dependency>
@@ -40,6 +61,11 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>${springdoc-openapi-ui.version}</version>
+        </dependency>
+        <!-- persistence -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
         </dependency>
         <!-- util -->
         <dependency>
