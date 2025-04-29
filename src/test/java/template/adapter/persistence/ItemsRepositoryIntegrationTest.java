@@ -3,6 +3,7 @@ package template.adapter.persistence;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import template.AbstractIntegrationTest;
+import template.infrastructure.adapter.persistence.ItemsRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static template.util.TestItems.createTestItemEntities;

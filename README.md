@@ -10,6 +10,38 @@ while creating Maven Archetype seemed not flexible enough for me.
 
 The goal was to keep it simple, clean and easy to modify.
 
+## Concept
+
+The hexagonal architecture, also known as the ports and adapters architecture, was invented by Alistair Cockburn.
+It is an architectural pattern that helps to avoid dependency-related problems in software design,
+mainly by using loosely coupled components, that can be implemented, tested and deployed separately,
+and then connected via ports and adapters.
+
+It typically consists of Ports, Adapters, Application and Domain. Some sources also contain
+information about Infrastructure, Use Cases and Driving/Driven side, which in my opinion
+support interfaces segregation and fit the concept, so I decided to go with those as well.
+
+Image below shows concept implemented in this repository:
+
+![Hexagonal Architecture](documentation/hexagonal-architecture.jpg)
+
+Some sources say, that the hexagonal architecture is at the origin of the microservices architecture.
+It makes me think of Spring Boot, which is commonly used to build microservices.
+Spring Boot also supports many ways to integrate with other components (such as by HTTP, JDBC, JMS or with Kafka etc.)
+and seems to me a natural choice to work with such an architecture pattern.
+
+In result, this repository contains a template implementation of microservice with hexagonal architecture,
+written in Java with Spring Boot. It is consisted of:
+* Infrastructure package
+  * Adapters (web and persistence)
+* Application package
+  * Ports
+  * Use Case
+  * Domain
+
+Please note that (as it is just a template) it supports handling HTTP requests and communication with database, however, depending on the needs,
+it is open for further extensions (e.g. Other Client and Other Host presented in the image below).
+
 ## Stack
 
 Application is implemented in Java with Spring Boot, and integrates with in-memory database (H2).

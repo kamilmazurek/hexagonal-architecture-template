@@ -1,9 +1,9 @@
-package template.adapter.persistence;
+package template.infrastructure.adapter.persistence;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import template.adapter.persistence.model.ItemEntity;
+import template.infrastructure.adapter.persistence.model.ItemEntity;
 import template.application.domain.model.Item;
 import template.application.port.ItemsRepositoryPort;
 

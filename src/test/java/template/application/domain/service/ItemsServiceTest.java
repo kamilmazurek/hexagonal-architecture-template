@@ -1,8 +1,7 @@
 package template.application.domain.service;
 
 import org.junit.jupiter.api.Test;
-import template.adapter.persistence.ItemsRepositoryAdapter;
-import template.application.domain.service.ItemsService;
+import template.infrastructure.adapter.persistence.ItemsRepositoryAdapter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;

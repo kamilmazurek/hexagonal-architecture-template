@@ -1,4 +1,4 @@
-package template.adapter.web;
+package template.infrastructure.adapter.web;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
