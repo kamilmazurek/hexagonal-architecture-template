@@ -1,6 +1,6 @@
 package template.util;
 
-import template.adapter.persistence.model.ItemEntity;
+import template.infrastructure.adapter.persistence.model.ItemEntity;
 import template.api.model.ItemDTO;
 import template.application.domain.model.Item;
 

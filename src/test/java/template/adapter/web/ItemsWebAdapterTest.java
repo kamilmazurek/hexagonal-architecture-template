@@ -2,6 +2,7 @@ package template.adapter.web;
 
 import org.junit.jupiter.api.Test;
 import template.application.port.ItemsWebPort;
+import template.infrastructure.adapter.web.ItemsWebAdapter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;

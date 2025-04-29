@@ -1,6 +1,8 @@
 package template.adapter.persistence;
 
 import org.junit.jupiter.api.Test;
+import template.infrastructure.adapter.persistence.ItemsRepository;
+import template.infrastructure.adapter.persistence.ItemsRepositoryAdapter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;

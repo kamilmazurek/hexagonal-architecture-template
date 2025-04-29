@@ -1,4 +1,4 @@
-package template.adapter.persistence.model;
+package template.infrastructure.adapter.persistence.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
