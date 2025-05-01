@@ -36,7 +36,7 @@ written in Java with Spring Boot. It is consisted of:
   * Adapters (web and persistence)
 * Application package
   * Ports
-  * Use Case
+  * Use Cases
   * Domain
 
 Please note that (as it is just a template) it supports handling HTTP requests and communication with database, however, depending on the needs,
@@ -122,6 +122,30 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ItemDTO'
+  /items/{itemId}:
+    put:
+      operationId: putItem
+      description: Creates new item or replaces target item with the request content
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of an item
+          required: true
+          schema:
+            type: long
+      tags:
+        - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemDTO'
+      responses:
+        '200':
+          description: Successful response
+        '400':
+          description: Bad request
+
 components:
   schemas:
     ItemDTO:
@@ -147,9 +171,27 @@ Response should contain items from the database. If there are no items, then emp
 []
 ```
 
-However, if application has been started with dev profile,
+Items can be added to database, for example, using the PUT method. This can be done by using the following curl command on Linux:
+```console
+curl -i -X PUT http://localhost:8080/items/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Item A"}'
+```
+
+Once the item has been successfully added, it should be returned in response to a GET http://localhost:8080/items request:
+```json
+[
+  {
+    "id": 1,
+    "name":"Item A"
+  }
+]
+```  
+
+
+Additionally, if application has been started with dev profile,
 some test data should be automatically added to the database, and thus following items
-should be returned in response:
+should be returned in default response:
 ```json
 [
   {
