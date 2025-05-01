@@ -32,5 +32,4 @@ public class TestItems {
         return List.of(itemA, itemB, itemC);
     }
 
-
 }

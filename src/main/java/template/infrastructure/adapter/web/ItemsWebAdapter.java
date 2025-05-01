@@ -21,8 +21,16 @@ public class ItemsWebAdapter {
         return port.getItems().stream().map(this::toDTO).toList();
     }
 
+    public void putItem(Long itemId, ItemDTO itemDTO) {
+        port.putItem(itemId, toDomainObject(itemDTO));
+    }
+
     private ItemDTO toDTO(Item item) {
         return mapper.map(item, ItemDTO.class);
+    }
+
+    private Item toDomainObject(ItemDTO itemDTO) {
+        return mapper.map(itemDTO, Item.class);
     }
 
 }
