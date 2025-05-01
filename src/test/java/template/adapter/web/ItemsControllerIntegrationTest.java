@@ -4,11 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import template.AbstractIntegrationTest;
 import template.api.model.ItemDTO;
-import template.infrastructure.adapter.persistence.ItemsRepository;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
@@ -45,6 +42,17 @@ public class ItemsControllerIntegrationTest extends AbstractIntegrationTest {
 
         //then item can be retrieved by ID
         //TODO add additional check: retrieve item by ID and check whether it matches previously put item
+    }
+
+    @Test
+    void shouldNotPutItemIfHasAmbiguousID() {
+        given()
+                .contentType("application/json")
+                .body(new ItemDTO().id(5L).name("Item E"))
+                .when()
+                .put("/items/6")
+                .then()
+                .statusCode(400);
     }
 
 }
