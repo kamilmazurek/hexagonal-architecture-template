@@ -7,7 +7,10 @@ import template.infrastructure.adapter.web.ItemsController;
 import template.infrastructure.adapter.web.ItemsWebAdapter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -54,6 +57,27 @@ public class ItemsControllerTest {
 
         //and adapter was involved in saving data
         verify(adapter, times(1)).putItem(1L, item);
+    }
+
+    @Test
+    void shouldNotPutItemIfHasAmbiguousID() {
+        //given adapter
+        var adapter = mock(ItemsWebAdapter.class);
+
+        //and controller
+        var controller = new ItemsController(adapter);
+
+        //and item
+        var item = new ItemDTO().id(1L).name("Item A");
+
+        //when item with ambiguous ID is put
+        var response = controller.putItem(2L, item);
+
+        //then Bad Request status is returned
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        //and adapter was not involved in saving data
+        verify(adapter, never()).putItem(any(), eq(item));
     }
 
 }
