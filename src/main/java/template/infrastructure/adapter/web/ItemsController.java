@@ -15,6 +15,10 @@ public class ItemsController implements ItemsApi {
 
     private ItemsWebAdapter adapter;
 
+    public ResponseEntity<ItemDTO> getItem(Long id) {
+        return adapter.getItem(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
     @Override
     public ResponseEntity<List<ItemDTO>> getItems() {
         return ResponseEntity.ok(adapter.getItems());

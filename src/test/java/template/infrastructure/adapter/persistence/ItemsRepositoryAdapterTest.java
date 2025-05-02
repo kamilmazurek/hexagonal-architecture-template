@@ -1,25 +1,47 @@
-package template.adapter.persistence;
+package template.infrastructure.adapter.persistence;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.test.util.ReflectionTestUtils;
 import template.application.domain.model.Item;
-import template.infrastructure.adapter.persistence.ItemsRepository;
-import template.infrastructure.adapter.persistence.ItemsRepositoryAdapter;
 import template.infrastructure.adapter.persistence.model.ItemEntity;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.util.ReflectionTestUtils.invokeMethod;
 import static template.util.TestItems.createTestItemEntities;
 import static template.util.TestItems.createTestItems;
+import static template.util.TestUtils.once;
 
 public class ItemsRepositoryAdapterTest {
 
     @Test
-    void shouldReturnItems() {
+    void shouldGetItem() {
+        //given item
+        var item = ItemEntity.builder().id(1L).name("Item A").build();
+
+        //and repository
+        var repository = mock(ItemsRepository.class);
+        when(repository.findById(1L)).thenReturn(Optional.of(item));
+
+        //and adapter
+        var adapter = new ItemsRepositoryAdapter(repository);
+
+        //when item is requested
+        var itemFromRepository = adapter.getItem(1L);
+
+        //then expected items are returned
+        assertEquals(adapter.toDomainObject(item), itemFromRepository.get());
+
+        //and repository was queried for data
+        verify(repository, once()).findById(1L);
+    }
+
+
+    @Test
+    void shouldGetItems() {
         //given repository
         var repository = mock(ItemsRepository.class);
         when(repository.findAll()).thenReturn(createTestItemEntities());
@@ -34,7 +56,7 @@ public class ItemsRepositoryAdapterTest {
         assertEquals(createTestItems(), items);
 
         //and repository was queried for data
-        verify(repository, times(1)).findAll();
+        verify(repository, once()).findAll();
     }
 
     @Test
@@ -52,7 +74,7 @@ public class ItemsRepositoryAdapterTest {
         adapter.putItem(1L, item);
 
         //then item has been put to repository
-        verify(repository, times(1)).save(invokeMethod(adapter, "toEntity", item));
+        verify(repository, times(1)).save(adapter.toEntity(item));
     }
 
 }

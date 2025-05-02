@@ -4,17 +4,41 @@ import org.junit.jupiter.api.Test;
 import template.application.domain.model.Item;
 import template.infrastructure.adapter.persistence.ItemsRepositoryAdapter;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItems;
+import static template.util.TestUtils.once;
 
 public class ItemsServiceTest {
 
     @Test
-    void shouldReturnItems() {
+    void shouldGetItem() {
+        //given item
+        var item = Item.builder().id(1L).name("Item A").build();
+
+        //and adapter
+        var adapter = mock(ItemsRepositoryAdapter.class);
+        when(adapter.getItem(1L)).thenReturn(Optional.of(item));
+
+        //and service
+        var service = new ItemsService(adapter);
+
+        //when item is requested
+        var itemFromService = service.getItem(1L);
+
+        //then expected item is returned
+        assertEquals(item, itemFromService.get());
+
+        //and adapter was involved in retrieving the data
+        verify(adapter, once()).getItem(1L);
+    }
+
+    @Test
+    void shouldGetItems() {
         //given adapter
         var adapter = mock(ItemsRepositoryAdapter.class);
         when(adapter.getItems()).thenReturn(createTestItems());
@@ -29,7 +53,7 @@ public class ItemsServiceTest {
         assertEquals(createTestItems(), items);
 
         //and adapter was involved in retrieving the data
-        verify(adapter, times(1)).getItems();
+        verify(adapter, once()).getItems();
     }
 
     @Test
@@ -47,7 +71,7 @@ public class ItemsServiceTest {
         service.putItem(1L, item);
 
         //and adapter was involved in saving the data
-        verify(adapter, times(1)).putItem(1L, item);
+        verify(adapter, once()).putItem(1L, item);
     }
 
 }
