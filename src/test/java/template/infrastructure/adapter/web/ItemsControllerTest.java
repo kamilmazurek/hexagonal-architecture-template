@@ -1,12 +1,13 @@
-package template.adapter.web;
+package template.infrastructure.adapter.web;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import template.api.model.ItemDTO;
-import template.infrastructure.adapter.web.ItemsController;
-import template.infrastructure.adapter.web.ItemsWebAdapter;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -15,11 +16,59 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItemDTOs;
+import static template.util.TestUtils.once;
 
 public class ItemsControllerTest {
 
     @Test
-    void shouldReturnItems() {
+    void shouldGetItem() {
+        //given item
+        var item = new ItemDTO().id(1L).name("Item A");
+
+        //and adapter
+        var adapter = mock(ItemsWebAdapter.class);
+        when(adapter.getItem(1L)).thenReturn(Optional.of(item));
+
+        //and controller
+        var controller = new ItemsController(adapter);
+
+        //when item is requested
+        var response = controller.getItem(1L);
+
+        //then response containing expected item is returned
+        assertEquals(item, response.getBody());
+
+        //and OK status is returned
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        //and adapter was involved in retrieving the data
+        verify(adapter, once()).getItem(1L);
+    }
+
+    @Test
+    void shouldNotGetItem() {
+        //given adapter
+        var adapter = mock(ItemsWebAdapter.class);
+        when(adapter.getItem(1L)).thenReturn(Optional.empty());
+
+        //and controller
+        var controller = new ItemsController(adapter);
+
+        //when item is requested
+        var response = controller.getItem(1L);
+
+        //then response contains no item
+        assertNull(response.getBody());
+
+        //and Not Found status is returned
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+        //and adapter was involved in retrieving the data
+        verify(adapter, once()).getItem(1L);
+    }
+
+    @Test
+    void shouldGetItems() {
         //given adapter
         var adapter = mock(ItemsWebAdapter.class);
         when(adapter.getItems()).thenReturn(createTestItemDTOs());
@@ -31,11 +80,13 @@ public class ItemsControllerTest {
         var response = controller.getItems();
 
         //then response containing expected items is returned
-        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(createTestItemDTOs(), response.getBody());
 
+        //and OK status is returned
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
         //and adapter was involved in retrieving the data
-        verify(adapter, times(1)).getItems();
+        verify(adapter, once()).getItems();
     }
 
     @Test
@@ -56,7 +107,7 @@ public class ItemsControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
         //and adapter was involved in saving data
-        verify(adapter, times(1)).putItem(1L, item);
+        verify(adapter,once()).putItem(1L, item);
     }
 
     @Test

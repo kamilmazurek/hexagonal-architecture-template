@@ -123,6 +123,27 @@ paths:
                 items:
                   $ref: '#/components/schemas/ItemDTO'
   /items/{itemId}:
+    get:
+      operationId: getItem
+      description: Returns item with given ID
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of an item
+          required: true
+          schema:
+            type: long
+      tags:
+        - items
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemDTO'
+        '404':
+          description: Not found
     put:
       operationId: putItem
       description: Creates new item or replaces target item with the request content
@@ -188,10 +209,17 @@ Once the item has been successfully added, it should be returned in response to 
 ]
 ```  
 
+Item can also be retrieved by ID using items/{ID} path, e.g. by sending GET http://localhost:8080/items/1 request:
+```json
+{
+  "id": 1,
+  "name":"Item A"
+}
+```
 
 Additionally, if application has been started with dev profile,
 some test data should be automatically added to the database, and thus following items
-should be returned in default response:
+should be returned in default response to a GET http://localhost:8080/items request:
 ```json
 [
   {

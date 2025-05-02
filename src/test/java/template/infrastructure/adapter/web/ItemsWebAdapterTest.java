@@ -1,23 +1,46 @@
-package template.adapter.web;
+package template.infrastructure.adapter.web;
 
 import org.junit.jupiter.api.Test;
 import template.api.model.ItemDTO;
+import template.application.domain.model.Item;
 import template.application.port.ItemsWebPort;
-import template.infrastructure.adapter.web.ItemsWebAdapter;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.util.ReflectionTestUtils.invokeMethod;
 import static template.util.TestItems.createTestItemDTOs;
 import static template.util.TestItems.createTestItems;
+import static template.util.TestUtils.once;
 
 public class ItemsWebAdapterTest {
 
     @Test
-    void shouldReturnItems() {
+    void shouldGetItem() {
+        //given item
+        var item = Item.builder().id(1L).name("Item A").build();
+
+        //and port
+        var port = mock(ItemsWebPort.class);
+        when(port.getItem(1L)).thenReturn(Optional.of(item));
+
+        //and adapter
+        var adapter = new ItemsWebAdapter(port);
+
+        //when item is requested
+        var itemFromAdapter = adapter.getItem(1L);
+
+        //then expected item is returned
+        assertEquals(adapter.toDTO(item), itemFromAdapter.get());
+
+        //and port was involved in retrieving the data
+        verify(port, once()).getItem(1L);
+    }
+
+    @Test
+    void shouldGetItems() {
         //given port
         var port = mock(ItemsWebPort.class);
         when(port.getItems()).thenReturn(createTestItems());
@@ -32,7 +55,7 @@ public class ItemsWebAdapterTest {
         assertEquals(createTestItemDTOs(), items);
 
         //and port was involved in retrieving the data
-        verify(port, times(1)).getItems();
+        verify(port, once()).getItems();
     }
 
     @Test
@@ -50,7 +73,7 @@ public class ItemsWebAdapterTest {
         adapter.putItem(1L, item);
 
         //then port was involved in saving data
-        verify(port, times(1)).putItem(1L, invokeMethod(adapter, "toDomainObject", item));
+        verify(port, once()).putItem(1L, adapter.toDomainObject(item));
     }
 
 }

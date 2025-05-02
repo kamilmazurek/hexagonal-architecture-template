@@ -22,6 +22,27 @@ paths:
                 items:
                   $ref: '#/components/schemas/ItemDTO'
   /items/{itemId}:
+    get:
+      operationId: getItem
+      description: Returns item with given ID
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of an item
+          required: true
+          schema:
+            type: long
+      tags:
+        - items
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemDTO'
+        '404':
+          description: Not found
     put:
       operationId: putItem
       description: Creates new item or replaces target item with the request content

@@ -1,19 +1,11 @@
-package template.adapter.persistence;
+package template.infrastructure.adapter.persistence;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import template.AbstractIntegrationTest;
-import template.application.domain.model.Item;
-import template.infrastructure.adapter.persistence.ItemsRepository;
-import template.infrastructure.adapter.persistence.ItemsRepositoryAdapter;
 import template.infrastructure.adapter.persistence.model.ItemEntity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.util.ReflectionTestUtils.invokeMethod;
 import static template.util.TestItems.createTestItemEntities;
 
 public class ItemsRepositoryIntegrationTest extends AbstractIntegrationTest {
@@ -22,7 +14,16 @@ public class ItemsRepositoryIntegrationTest extends AbstractIntegrationTest {
     private ItemsRepository repository;
 
     @Test
-    void shouldReturnItems() {
+    void shouldGetItem() {
+        //when item is requested
+        var item = repository.findById(1L);
+
+        //then expected item is returned
+        assertEquals(ItemEntity.builder().id(1L).name("Item A").build(), item.get());
+    }
+
+    @Test
+    void shouldGetItems() {
         //when items are requested
         var items = repository.findAll();
 
@@ -42,6 +43,9 @@ public class ItemsRepositoryIntegrationTest extends AbstractIntegrationTest {
         var itemFromRepository = repository.findById(4L);
         assertEquals(item.getId(), itemFromRepository.get().getId());
         assertEquals(item.getName(), itemFromRepository.get().getName());
+
+        //cleanup
+        repository.deleteById(4L);
     }
 
 }

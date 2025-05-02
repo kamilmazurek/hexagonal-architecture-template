@@ -1,5 +1,6 @@
 package template.infrastructure.adapter.web;
 
+import com.google.common.annotations.VisibleForTesting;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import template.application.domain.model.Item;
 import template.application.port.ItemsWebPort;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -17,6 +19,10 @@ public class ItemsWebAdapter {
 
     private final ModelMapper mapper = new ModelMapper();
 
+    public Optional<ItemDTO> getItem(Long id) {
+        return port.getItem(id).map(this::toDTO);
+    }
+
     public List<ItemDTO> getItems() {
         return port.getItems().stream().map(this::toDTO).toList();
     }
@@ -25,11 +31,13 @@ public class ItemsWebAdapter {
         port.putItem(itemId, toDomainObject(itemDTO));
     }
 
-    private ItemDTO toDTO(Item item) {
+    @VisibleForTesting
+    ItemDTO toDTO(Item item) {
         return mapper.map(item, ItemDTO.class);
     }
 
-    private Item toDomainObject(ItemDTO itemDTO) {
+    @VisibleForTesting
+    Item toDomainObject(ItemDTO itemDTO) {
         return mapper.map(itemDTO, Item.class);
     }
 
