@@ -20,19 +20,19 @@ public class ItemsWebAdapter {
     private final ModelMapper mapper = new ModelMapper();
 
     public Optional<ItemDTO> getItem(Long id) {
-        return port.getItem(id).map(this::toDTO);
+        return port.read(id).map(this::toDTO);
     }
 
     public List<ItemDTO> getItems() {
-        return port.getItems().stream().map(this::toDTO).toList();
+        return port.read().stream().map(this::toDTO).toList();
     }
 
     public void postItem(ItemDTO itemDTO) {
-        port.createItem(toDomainObject(itemDTO));
+        port.create(toDomainObject(itemDTO));
     }
 
     public void putItem(Long itemId, ItemDTO itemDTO) {
-        port.insertItem(itemId, toDomainObject(itemDTO));
+        port.insert(itemId, toDomainObject(itemDTO));
     }
 
     @VisibleForTesting

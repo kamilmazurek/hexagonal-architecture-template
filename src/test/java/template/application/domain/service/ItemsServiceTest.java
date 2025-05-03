@@ -16,44 +16,44 @@ import static template.util.TestUtils.once;
 public class ItemsServiceTest {
 
     @Test
-    void shouldGetItem() {
+    void shouldReadItem() {
         //given item
         var item = Item.builder().id(1L).name("Item A").build();
 
         //and adapter
         var adapter = mock(ItemsRepositoryAdapter.class);
-        when(adapter.getItem(1L)).thenReturn(Optional.of(item));
+        when(adapter.read(1L)).thenReturn(Optional.of(item));
 
         //and service
         var service = new ItemsService(adapter);
 
         //when item is requested
-        var itemFromService = service.getItem(1L);
+        var itemFromService = service.read(1L);
 
         //then expected item is returned
         assertEquals(item, itemFromService.get());
 
         //and adapter was involved in retrieving the data
-        verify(adapter, once()).getItem(1L);
+        verify(adapter, once()).read(1L);
     }
 
     @Test
-    void shouldGetItems() {
+    void shouldReadItems() {
         //given adapter
         var adapter = mock(ItemsRepositoryAdapter.class);
-        when(adapter.getItems()).thenReturn(createTestItems());
+        when(adapter.read()).thenReturn(createTestItems());
 
         //and service
         var service = new ItemsService(adapter);
 
         //when items are requested
-        var items = service.getItems();
+        var items = service.read();
 
         //then expected items are returned
         assertEquals(createTestItems(), items);
 
         //and adapter was involved in retrieving the data
-        verify(adapter, once()).getItems();
+        verify(adapter, once()).read();
     }
 
     @Test
@@ -68,10 +68,10 @@ public class ItemsServiceTest {
         var item = Item.builder().name("Item A").build();
 
         //when item is created
-        service.createItem(item);
+        service.create(item);
 
         //and adapter was involved in saving the data
-        verify(adapter, once()).createItem(item);
+        verify(adapter, once()).create(item);
     }
 
     @Test
@@ -86,10 +86,10 @@ public class ItemsServiceTest {
         var item = Item.builder().id(1L).name("Item A").build();
 
         //when item is inserted
-        service.insertItem(1L, item);
+        service.insert(1L, item);
 
         //and adapter was involved in saving the data
-        verify(adapter, once()).insertItem(1L, item);
+        verify(adapter, once()).insert(1L, item);
     }
 
 }

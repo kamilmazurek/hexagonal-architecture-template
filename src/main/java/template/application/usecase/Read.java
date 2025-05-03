@@ -2,11 +2,13 @@ package template.application.usecase;
 
 import template.application.domain.model.Item;
 
+import java.util.List;
 import java.util.Optional;
 
-@FunctionalInterface
-public interface GetItem {
+public interface Read {
 
-    Optional<Item> getItem(Long id);
+    Optional<Item> read(Long id);
+
+    List<Item> read();
 
 }

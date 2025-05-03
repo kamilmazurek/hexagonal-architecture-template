@@ -16,23 +16,23 @@ public class ItemsService implements ItemsWebPort {
     private ItemsRepositoryPort port;
 
     @Override
-    public Optional<Item> getItem(Long id) {
-        return port.getItem(id);
+    public Optional<Item> read(Long id) {
+        return port.read(id);
     }
 
     @Override
-    public List<Item> getItems() {
-        return port.getItems();
+    public List<Item> read() {
+        return port.read();
     }
 
     @Override
-    public void createItem(Item item) {
-        port.createItem(item);
+    public void create(Item item) {
+        port.create(item);
     }
 
     @Override
-    public void insertItem(Long itemId, Item item) {
-        port.insertItem(itemId, item);
+    public void insert(Long itemId, Item item) {
+        port.insert(itemId, item);
     }
 
 }
