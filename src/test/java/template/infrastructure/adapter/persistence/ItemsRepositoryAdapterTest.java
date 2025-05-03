@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItemEntities;
@@ -21,7 +20,7 @@ import static template.util.TestUtils.once;
 public class ItemsRepositoryAdapterTest {
 
     @Test
-    void shouldGetItem() {
+    void shouldReadItem() {
         //given item
         var item = ItemEntity.builder().id(1L).name("Item A").build();
 
@@ -33,7 +32,7 @@ public class ItemsRepositoryAdapterTest {
         var adapter = new ItemsRepositoryAdapter(repository);
 
         //when item is requested
-        var itemFromRepository = adapter.getItem(1L);
+        var itemFromRepository = adapter.read(1L);
 
         //then expected items are returned
         assertEquals(adapter.toDomainObject(item), itemFromRepository.get());
@@ -44,7 +43,7 @@ public class ItemsRepositoryAdapterTest {
 
 
     @Test
-    void shouldGetItems() {
+    void shouldReadItems() {
         //given repository
         var repository = mock(ItemsRepository.class);
         when(repository.findAll()).thenReturn(createTestItemEntities());
@@ -53,7 +52,7 @@ public class ItemsRepositoryAdapterTest {
         var adapter = new ItemsRepositoryAdapter(repository);
 
         //when items are requested
-        var items = adapter.getItems();
+        var items = adapter.read();
 
         //then expected items are returned
         assertEquals(createTestItems(), items);
@@ -74,7 +73,7 @@ public class ItemsRepositoryAdapterTest {
         var item = Item.builder().name("Item A").build();
 
         //when item is created
-        adapter.createItem(item);
+        adapter.create(item);
 
         //then item has been put to repository
         var expectedEntity = adapter.toEntity(item);
@@ -94,7 +93,7 @@ public class ItemsRepositoryAdapterTest {
         var item = Item.builder().id(1L).name("Item A").build();
 
         //when item is created
-        var exception = assertThrows(IllegalArgumentException.class, () -> adapter.createItem(item));
+        var exception = assertThrows(IllegalArgumentException.class, () -> adapter.create(item));
 
         //then exception is thrown
         var expectedMessage = "ID should be null, so it will be set by adapter, but it has been already set to 1 instead";
@@ -116,7 +115,7 @@ public class ItemsRepositoryAdapterTest {
         var item = Item.builder().id(1L).name("Item A").build();
 
         //when item is inserted
-        adapter.insertItem(1L, item);
+        adapter.insert(1L, item);
 
         //then item has been put to repository
         verify(repository, once()).save(adapter.toEntity(item));

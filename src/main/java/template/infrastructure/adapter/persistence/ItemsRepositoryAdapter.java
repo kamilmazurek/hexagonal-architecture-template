@@ -23,18 +23,18 @@ public class ItemsRepositoryAdapter implements ItemsRepositoryPort {
     private final ModelMapper mapper = new ModelMapper();
 
     @Override
-    public Optional<Item> getItem(Long id) {
+    public Optional<Item> read(Long id) {
         return repository.findById(id).map(this::toDomainObject);
     }
 
     @Override
-    public List<Item> getItems() {
+    public List<Item> read() {
         return repository.findAll().stream().map(this::toDomainObject).toList();
     }
 
     @Override
     @Transactional
-    public void createItem(Item item) {
+    public void create(Item item) {
         if (item.getId() != null) {
             var message = format("ID should be null, so it will be set by adapter, but it has been already set to %s instead", item.getId());
             throw new IllegalArgumentException(message);
@@ -46,7 +46,7 @@ public class ItemsRepositoryAdapter implements ItemsRepositoryPort {
     }
 
     @Override
-    public void insertItem(Long itemId, Item item) {
+    public void insert(Long itemId, Item item) {
         item.setId(itemId);
         repository.save(toEntity(item));
     }

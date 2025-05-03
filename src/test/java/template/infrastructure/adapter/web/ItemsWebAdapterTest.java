@@ -24,7 +24,7 @@ public class ItemsWebAdapterTest {
 
         //and port
         var port = mock(ItemsWebPort.class);
-        when(port.getItem(1L)).thenReturn(Optional.of(item));
+        when(port.read(1L)).thenReturn(Optional.of(item));
 
         //and adapter
         var adapter = new ItemsWebAdapter(port);
@@ -36,14 +36,14 @@ public class ItemsWebAdapterTest {
         assertEquals(adapter.toDTO(item), itemFromAdapter.get());
 
         //and port was involved in retrieving the data
-        verify(port, once()).getItem(1L);
+        verify(port, once()).read(1L);
     }
 
     @Test
     void shouldGetItems() {
         //given port
         var port = mock(ItemsWebPort.class);
-        when(port.getItems()).thenReturn(createTestItems());
+        when(port.read()).thenReturn(createTestItems());
 
         //and adapter
         var adapter = new ItemsWebAdapter(port);
@@ -55,7 +55,7 @@ public class ItemsWebAdapterTest {
         assertEquals(createTestItemDTOs(), items);
 
         //and port was involved in retrieving the data
-        verify(port, once()).getItems();
+        verify(port, once()).read();
     }
 
     @Test
@@ -73,7 +73,7 @@ public class ItemsWebAdapterTest {
         adapter.postItem(item);
 
         //then port was involved in saving data
-        verify(port, once()).createItem(adapter.toDomainObject(item));
+        verify(port, once()).create(adapter.toDomainObject(item));
     }
 
     @Test
@@ -91,7 +91,7 @@ public class ItemsWebAdapterTest {
         adapter.putItem(1L, item);
 
         //then port was involved in saving data
-        verify(port, once()).insertItem(1L, adapter.toDomainObject(item));
+        verify(port, once()).insert(1L, adapter.toDomainObject(item));
     }
 
 }

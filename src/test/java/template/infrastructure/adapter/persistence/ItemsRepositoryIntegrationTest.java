@@ -14,7 +14,7 @@ public class ItemsRepositoryIntegrationTest extends AbstractIntegrationTest {
     private ItemsRepository repository;
 
     @Test
-    void shouldGetItem() {
+    void shouldFindItem() {
         //when item is requested
         var item = repository.findById(1L);
 
@@ -23,7 +23,7 @@ public class ItemsRepositoryIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void shouldGetItems() {
+    void shouldFindItems() {
         //when items are requested
         var items = repository.findAll();
 

@@ -2,9 +2,8 @@ package template.application.usecase;
 
 import template.application.domain.model.Item;
 
-@FunctionalInterface
-public interface CreateItem {
+public interface Create {
 
-    void createItem(Item item);
+    void create(Item item);
 
 }
