@@ -21,6 +21,21 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ItemDTO'
+    post:
+      operationId: postItem
+      description: Creates new item with the request content and ID set by server
+      tags:
+        - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemDTO'
+      responses:
+        '200':
+          description: Successful response
+        '400':
+          description: Bad request
   /items/{itemId}:
     get:
       operationId: getItem
@@ -45,7 +60,7 @@ paths:
           description: Not found
     put:
       operationId: putItem
-      description: Creates new item or replaces target item with the request content
+      description: Creates new item with given ID or replaces target item with the request content
       parameters:
       - name: itemId
         in: path

@@ -27,8 +27,12 @@ public class ItemsWebAdapter {
         return port.getItems().stream().map(this::toDTO).toList();
     }
 
+    public void postItem(ItemDTO itemDTO) {
+        port.createItem(toDomainObject(itemDTO));
+    }
+
     public void putItem(Long itemId, ItemDTO itemDTO) {
-        port.putItem(itemId, toDomainObject(itemDTO));
+        port.insertItem(itemId, toDomainObject(itemDTO));
     }
 
     @VisibleForTesting

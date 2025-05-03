@@ -11,11 +11,8 @@ import template.infrastructure.adapter.persistence.ItemsRepository;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.isEmptyString;
-import static org.hamcrest.Matchers.nullValue;
 import static template.util.TestItems.createTestItemDTOs;
 
 public class ItemsControllerIntegrationTest extends AbstractIntegrationTest {
@@ -36,7 +33,7 @@ public class ItemsControllerIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void shouldNotGetItem() throws JsonProcessingException {
+    void shouldNotFindItem() {
         when()
                 .get("/items/4")
                 .then()
@@ -56,11 +53,50 @@ public class ItemsControllerIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void shouldPutItem() throws JsonProcessingException {
+    void shouldCreateItemByPostRequest() throws JsonProcessingException {
         //given item
         var item = new ItemDTO().name("Item D");
 
-        //when item is put
+        //when POST request with item is sent
+        given()
+                .contentType("application/json")
+                .body(item)
+                .when()
+                .post("/items")
+                .then()
+                .statusCode(200);
+
+        //then item can be retrieved by ID
+        var expectedItem = new ItemDTO().id(4L).name("Item D");
+        when()
+                .get("/items/4")
+                .then()
+                .statusCode(200)
+                .assertThat()
+                .body(equalTo(objectWriter.writeValueAsString(expectedItem)));
+
+        //cleanup
+        //TODO change to DELETE request once implemented
+        repository.deleteById(4L);
+    }
+
+    @Test
+    void shouldNotAcceptPostRequestWhenItemHasID() {
+        given()
+                .contentType("application/json")
+                .body(new ItemDTO().id(4L).name("Item D"))
+                .when()
+                .post("/items")
+                .then()
+                .statusCode(400);
+    }
+
+    @Test
+    void shouldInsertItemByPutRequest() throws JsonProcessingException {
+        //given item
+        var item = new ItemDTO().id(4L).name("Item D");
+
+        //when PUT request with item is sent
         given()
                 .contentType("application/json")
                 .body(item)
@@ -70,13 +106,12 @@ public class ItemsControllerIntegrationTest extends AbstractIntegrationTest {
                 .statusCode(200);
 
         //then item can be retrieved by ID
-        var itemWithID = new ItemDTO().id(4L).name("Item D");
         when()
                 .get("/items/4")
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body(equalTo(objectWriter.writeValueAsString(itemWithID)));
+                .body(equalTo(objectWriter.writeValueAsString(item)));
 
         //cleanup
         //TODO change to DELETE request once implemented
@@ -84,7 +119,7 @@ public class ItemsControllerIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void shouldNotPutItemIfHasAmbiguousID() {
+    void shouldNotAcceptPutRequestWhenItemHasAmbiguousID() {
         given()
                 .contentType("application/json")
                 .body(new ItemDTO().id(5L).name("Item E"))

@@ -59,7 +59,7 @@ public class ItemsWebAdapterTest {
     }
 
     @Test
-    void shouldPutItem() {
+    void shouldCreateItemByPostRequest() {
         //given port
         var port = mock(ItemsWebPort.class);
 
@@ -69,11 +69,29 @@ public class ItemsWebAdapterTest {
         //and item
         var item = new ItemDTO().name("Item A");
 
-        //when item is put
+        //when POST request with item is handled
+        adapter.postItem(item);
+
+        //then port was involved in saving data
+        verify(port, once()).createItem(adapter.toDomainObject(item));
+    }
+
+    @Test
+    void shouldInsertItemByPutRequest() {
+        //given port
+        var port = mock(ItemsWebPort.class);
+
+        //and adapter
+        var adapter = new ItemsWebAdapter(port);
+
+        //and item
+        var item = new ItemDTO().id(1L).name("Item A");
+
+        //when PUT request with item is handled
         adapter.putItem(1L, item);
 
         //then port was involved in saving data
-        verify(port, once()).putItem(1L, adapter.toDomainObject(item));
+        verify(port, once()).insertItem(1L, adapter.toDomainObject(item));
     }
 
 }
