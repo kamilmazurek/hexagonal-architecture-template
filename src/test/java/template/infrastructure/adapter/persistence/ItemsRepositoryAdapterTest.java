@@ -7,7 +7,10 @@ import template.infrastructure.adapter.persistence.model.ItemEntity;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -60,7 +63,7 @@ public class ItemsRepositoryAdapterTest {
     }
 
     @Test
-    void shouldPutItem() {
+    void shouldCreateItem() {
         //given repository
         var repository = mock(ItemsRepository.class);
 
@@ -70,11 +73,53 @@ public class ItemsRepositoryAdapterTest {
         //and item
         var item = Item.builder().name("Item A").build();
 
-        //when item is put
-        adapter.putItem(1L, item);
+        //when item is created
+        adapter.createItem(item);
 
         //then item has been put to repository
-        verify(repository, times(1)).save(adapter.toEntity(item));
+        var expectedEntity = adapter.toEntity(item);
+        expectedEntity.setId(1L);
+        verify(repository, once()).save(expectedEntity);
+    }
+
+    @Test
+    void shouldNotCreateItem() {
+        //given repository
+        var repository = mock(ItemsRepository.class);
+
+        //and adapter
+        var adapter = new ItemsRepositoryAdapter(repository);
+
+        //and item
+        var item = Item.builder().id(1L).name("Item A").build();
+
+        //when item is created
+        var exception = assertThrows(IllegalArgumentException.class, () -> adapter.createItem(item));
+
+        //then exception is thrown
+        var expectedMessage = "ID should be null, so it will be set by adapter, but it has been already set to 1 instead";
+        assertEquals(expectedMessage, exception.getMessage());
+
+        //and item has not been put to repository
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    void shouldInsertItem() {
+        //given repository
+        var repository = mock(ItemsRepository.class);
+
+        //and adapter
+        var adapter = new ItemsRepositoryAdapter(repository);
+
+        //and item
+        var item = Item.builder().id(1L).name("Item A").build();
+
+        //when item is inserted
+        adapter.insertItem(1L, item);
+
+        //then item has been put to repository
+        verify(repository, once()).save(adapter.toEntity(item));
     }
 
 }

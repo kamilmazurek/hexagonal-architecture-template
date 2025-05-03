@@ -32,11 +32,11 @@ public class ItemsRepositoryIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void shouldPutItem() {
+    void shouldSaveItem() {
         //given item
         var item = ItemEntity.builder().id(4L).name("Item D").build();
 
-        //when item is put
+        //when item is saved
         repository.save(item);
 
         //then item can be retrieved from repository
@@ -46,6 +46,15 @@ public class ItemsRepositoryIntegrationTest extends AbstractIntegrationTest {
 
         //cleanup
         repository.deleteById(4L);
+    }
+
+    @Test
+    void shouldFindMaxID() {
+        //when repository is queried for max ID
+        var maxID = repository.findMaxID();
+
+        //then max ID is returned
+        assertEquals(3L, maxID);
     }
 
 }

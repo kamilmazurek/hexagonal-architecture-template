@@ -25,6 +25,16 @@ public class ItemsController implements ItemsApi {
     }
 
     @Override
+    public ResponseEntity<Void> postItem(ItemDTO itemDTO) {
+        if (itemDTO.getId() != null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        adapter.postItem(itemDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
     public ResponseEntity<Void> putItem(Long itemId, ItemDTO itemDTO) {
         if (!hasValidId(itemId, itemDTO)) {
             return ResponseEntity.badRequest().build();
@@ -35,7 +45,7 @@ public class ItemsController implements ItemsApi {
     }
 
     private static boolean hasValidId(Long itemId, ItemDTO itemDTO) {
-        return itemDTO.getId() == null || Objects.equals(itemId, itemDTO.getId());
+        return itemDTO.getId() != null && Objects.equals(itemId, itemDTO.getId());
     }
 
 }

@@ -57,7 +57,7 @@ public class ItemsServiceTest {
     }
 
     @Test
-    void shouldPutItem() {
+    void shouldCreateItem() {
         //given adapter
         var adapter = mock(ItemsRepositoryAdapter.class);
 
@@ -67,11 +67,29 @@ public class ItemsServiceTest {
         //and item
         var item = Item.builder().name("Item A").build();
 
-        //when item is put
-        service.putItem(1L, item);
+        //when item is created
+        service.createItem(item);
 
         //and adapter was involved in saving the data
-        verify(adapter, once()).putItem(1L, item);
+        verify(adapter, once()).createItem(item);
+    }
+
+    @Test
+    void shouldInsertItem() {
+        //given adapter
+        var adapter = mock(ItemsRepositoryAdapter.class);
+
+        //and service
+        var service = new ItemsService(adapter);
+
+        //and item
+        var item = Item.builder().id(1L).name("Item A").build();
+
+        //when item is inserted
+        service.insertItem(1L, item);
+
+        //and adapter was involved in saving the data
+        verify(adapter, once()).insertItem(1L, item);
     }
 
 }

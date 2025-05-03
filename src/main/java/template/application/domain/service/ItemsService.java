@@ -26,8 +26,13 @@ public class ItemsService implements ItemsWebPort {
     }
 
     @Override
-    public void putItem(Long itemId, Item item) {
-        port.putItem(itemId, item);
+    public void createItem(Item item) {
+        port.createItem(item);
+    }
+
+    @Override
+    public void insertItem(Long itemId, Item item) {
+        port.insertItem(itemId, item);
     }
 
 }

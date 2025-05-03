@@ -4,12 +4,15 @@ import com.google.common.annotations.VisibleForTesting;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import template.application.domain.model.Item;
 import template.application.port.ItemsRepositoryPort;
 import template.infrastructure.adapter.persistence.model.ItemEntity;
 
 import java.util.List;
 import java.util.Optional;
+
+import static java.lang.String.format;
 
 @Component
 @AllArgsConstructor
@@ -30,7 +33,20 @@ public class ItemsRepositoryAdapter implements ItemsRepositoryPort {
     }
 
     @Override
-    public void putItem(Long itemId, Item item) {
+    @Transactional
+    public void createItem(Item item) {
+        if (item.getId() != null) {
+            var message = format("ID should be null, so it will be set by adapter, but it has been already set to %s instead", item.getId());
+            throw new IllegalArgumentException(message);
+        }
+        var itemEntity = toEntity(item);
+        var maxID = repository.findMaxID();
+        itemEntity.setId(maxID + 1);
+        repository.save(itemEntity);
+    }
+
+    @Override
+    public void insertItem(Long itemId, Item item) {
         item.setId(itemId);
         repository.save(toEntity(item));
     }

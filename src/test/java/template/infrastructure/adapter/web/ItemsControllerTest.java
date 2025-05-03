@@ -12,7 +12,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItemDTOs;
@@ -46,7 +45,7 @@ public class ItemsControllerTest {
     }
 
     @Test
-    void shouldNotGetItem() {
+    void shouldNotFindItem() {
         //given adapter
         var adapter = mock(ItemsWebAdapter.class);
         when(adapter.getItem(1L)).thenReturn(Optional.empty());
@@ -90,7 +89,7 @@ public class ItemsControllerTest {
     }
 
     @Test
-    void shouldPutItem() {
+    void shouldCreateItemByPostRequest() {
         //given adapter
         var adapter = mock(ItemsWebAdapter.class);
 
@@ -100,14 +99,56 @@ public class ItemsControllerTest {
         //and item
         var item = new ItemDTO().name("Item A");
 
-        //when item is put
+        //when POST request with item is handled
+        var response = controller.postItem(item);
+
+        //then OK status is returned
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        //and adapter was involved in saving data
+        verify(adapter, once()).postItem(item);
+    }
+
+    @Test
+    void shouldNotAcceptPostRequestWhenItemHasID() {
+        //given adapter
+        var adapter = mock(ItemsWebAdapter.class);
+
+        //and controller
+        var controller = new ItemsController(adapter);
+
+        //and item
+        var item = new ItemDTO().id(1L).name("Item A");
+
+        //when POST request with item containing ID is received
+        var response = controller.postItem(item);
+
+        //then Bad Request status is returned
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        //and adapter was not involved in saving data
+        verify(adapter, never()).putItem(any(), any());
+    }
+
+    @Test
+    void shouldInsertItemByPutRequest() {
+        //given adapter
+        var adapter = mock(ItemsWebAdapter.class);
+
+        //and controller
+        var controller = new ItemsController(adapter);
+
+        //and item
+        var item = new ItemDTO().id(1L).name("Item A");
+
+        //when PUT request with item is handled
         var response = controller.putItem(1L, item);
 
         //then OK status is returned
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
         //and adapter was involved in saving data
-        verify(adapter,once()).putItem(1L, item);
+        verify(adapter, once()).putItem(1L, item);
     }
 
     @Test
@@ -121,14 +162,14 @@ public class ItemsControllerTest {
         //and item
         var item = new ItemDTO().id(1L).name("Item A");
 
-        //when item with ambiguous ID is put
+        //when PUT request with ambiguous ID is received
         var response = controller.putItem(2L, item);
 
         //then Bad Request status is returned
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
         //and adapter was not involved in saving data
-        verify(adapter, never()).putItem(any(), eq(item));
+        verify(adapter, never()).putItem(any(), any());
     }
 
 }

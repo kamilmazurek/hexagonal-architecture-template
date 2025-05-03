@@ -3,8 +3,8 @@ package template.application.usecase;
 import template.application.domain.model.Item;
 
 @FunctionalInterface
-public interface PutItem {
+public interface CreateItem {
 
-    void putItem(Long itemId, Item item);
+    void createItem(Item item);
 
 }

@@ -2,6 +2,8 @@ spring:
   profiles:
     active: @activeProfile@
   datasource:
-    url: jdbc:h2:mem:layered
+    url: jdbc:h2:mem:hexagonal
   jpa:
     defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
