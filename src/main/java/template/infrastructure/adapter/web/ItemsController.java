@@ -44,6 +44,16 @@ public class ItemsController implements ItemsApi {
         return ResponseEntity.ok().build();
     }
 
+    @Override
+    public ResponseEntity<Void> deleteItem(Long itemId) {
+        if (adapter.getItem(itemId).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        adapter.deleteItem(itemId);
+        return ResponseEntity.ok().build();
+    }
+
     private static boolean hasValidId(Long itemId, ItemDTO itemDTO) {
         return itemDTO.getId() != null && Objects.equals(itemId, itemDTO.getId());
     }

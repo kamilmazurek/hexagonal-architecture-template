@@ -35,4 +35,8 @@ public class ItemsService implements ItemsWebPort {
         port.insert(itemId, item);
     }
 
+    @Override
+    public void delete(Long itemId) {
+        port.delete(itemId);
+    }
 }

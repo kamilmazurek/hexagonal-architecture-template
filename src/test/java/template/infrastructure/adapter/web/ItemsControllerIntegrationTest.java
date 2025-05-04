@@ -17,9 +17,6 @@ import static template.util.TestItems.createTestItemDTOs;
 
 public class ItemsControllerIntegrationTest extends AbstractIntegrationTest {
 
-    @Autowired
-    private ItemsRepository repository;
-
     private final ObjectWriter objectWriter = new ObjectMapper().writer();
 
     @Test
@@ -76,8 +73,10 @@ public class ItemsControllerIntegrationTest extends AbstractIntegrationTest {
                 .body(equalTo(objectWriter.writeValueAsString(expectedItem)));
 
         //cleanup
-        //TODO change to DELETE request once implemented
-        repository.deleteById(4L);
+        when()
+                .delete("/items/4")
+                .then()
+                .statusCode(200);
     }
 
     @Test
@@ -114,8 +113,10 @@ public class ItemsControllerIntegrationTest extends AbstractIntegrationTest {
                 .body(equalTo(objectWriter.writeValueAsString(item)));
 
         //cleanup
-        //TODO change to DELETE request once implemented
-        repository.deleteById(4L);
+        when()
+                .delete("/items/4")
+                .then()
+                .statusCode(200);
     }
 
     @Test
@@ -129,4 +130,46 @@ public class ItemsControllerIntegrationTest extends AbstractIntegrationTest {
                 .statusCode(400);
     }
 
+    @Test
+    void shouldDeleteItem() throws JsonProcessingException {
+        //given item
+        var item = new ItemDTO().id(4L).name("Item D");
+
+        //and item has been put
+        given()
+                .contentType("application/json")
+                .body(item)
+                .when()
+                .put("/items/4")
+                .then()
+                .statusCode(200);
+
+        //and item can be retrieved by ID
+        when()
+                .get("/items/4")
+                .then()
+                .statusCode(200)
+                .assertThat()
+                .body(equalTo(objectWriter.writeValueAsString(item)));
+
+        //when item is deleted
+        when()
+                .delete("/items/4")
+                .then()
+                .statusCode(200);
+
+        //then item can no longer be retrieved by ID
+        when()
+                .get("/items/4")
+                .then()
+                .statusCode(404);
+    }
+
+    @Test
+    void shouldNotFindItemToDelete() {
+        when()
+                .delete("/items/4")
+                .then()
+                .statusCode(404);
+    }
 }
