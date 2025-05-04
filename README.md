@@ -217,18 +217,18 @@ Response should contain items from the database. If there are no items, then emp
 []
 ```
 
-Items can be added to database, for example, using the PUT method. This can be done by using the following curl command on Linux:
-```console
-curl -i -X PUT http://localhost:8080/items/1 \
-  -H "Content-Type: application/json" \
-  -d '{"id":1, "name":"Item A"}'
-```
-
-Alternatively, items can be added to database by the POST method, e.g. by using the following curl command on Linux:
+Items can be added to the database by the POST method, e.g. "Item A" can be added by using the following curl command on Linux:
 ```console
 curl -i -X POST http://localhost:8080/items \
   -H "Content-Type: application/json" \
   -d '{"name":"Item A"}'
+```
+
+Items can be also added or updated by the PUT method, e.g. item with id 1 can be added or updated by using the following curl command on Linux:
+```console
+curl -i -X PUT http://localhost:8080/items/1 \
+  -H "Content-Type: application/json" \
+  -d '{"id":1, "name":"Item A"}'
 ```
 
 Once the item has been successfully added, it should be returned in response to a GET http://localhost:8080/items request:
