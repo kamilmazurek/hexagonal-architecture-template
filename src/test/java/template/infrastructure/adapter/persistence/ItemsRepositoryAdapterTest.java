@@ -26,19 +26,19 @@ public class ItemsRepositoryAdapterTest {
 
         //and repository
         var repository = mock(ItemsRepository.class);
-        when(repository.findById(1L)).thenReturn(Optional.of(item));
+        when(repository.findById(item.getId())).thenReturn(Optional.of(item));
 
         //and adapter
         var adapter = new ItemsRepositoryAdapter(repository);
 
         //when item is requested
-        var itemFromRepository = adapter.read(1L);
+        var itemFromRepository = adapter.read(item.getId());
 
         //then expected items are returned
         assertEquals(adapter.toDomainObject(item), itemFromRepository.get());
 
         //and repository was queried for data
-        verify(repository, once()).findById(1L);
+        verify(repository, once()).findById(item.getId());
     }
 
 
@@ -75,7 +75,7 @@ public class ItemsRepositoryAdapterTest {
         //when item is created
         adapter.create(item);
 
-        //then item has been put to repository
+        //then item is put to repository
         var expectedEntity = adapter.toEntity(item);
         expectedEntity.setId(1L);
         verify(repository, once()).save(expectedEntity);
@@ -115,10 +115,28 @@ public class ItemsRepositoryAdapterTest {
         var item = Item.builder().id(1L).name("Item A").build();
 
         //when item is inserted
-        adapter.insert(1L, item);
+        adapter.insert(item.getId(), item);
 
-        //then item has been put to repository
+        //then item is put to repository
         verify(repository, once()).save(adapter.toEntity(item));
+    }
+
+    @Test
+    void shouldDeleteItem() {
+        //given repository
+        var repository = mock(ItemsRepository.class);
+
+        //and adapter
+        var adapter = new ItemsRepositoryAdapter(repository);
+
+        //and item id
+        var itemId = 1L;
+
+        //when item is deleted
+        adapter.delete(itemId);
+
+        //then item is deleted from repository
+        verify(repository, once()).deleteById(itemId);
     }
 
 }

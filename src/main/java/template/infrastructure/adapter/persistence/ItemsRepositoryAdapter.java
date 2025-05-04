@@ -51,6 +51,11 @@ public class ItemsRepositoryAdapter implements ItemsRepositoryPort {
         repository.save(toEntity(item));
     }
 
+    @Override
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
     @VisibleForTesting
     Item toDomainObject(ItemEntity itemEntity) {
         return mapper.map(itemEntity, Item.class);

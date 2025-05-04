@@ -121,7 +121,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ItemDTO'
+                  $ref: '#/components/schemas/itemDTO'
     post:
       operationId: postItem
       description: Creates new item with the request content and ID set by server
@@ -131,7 +131,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ItemDTO'
+              $ref: '#/components/schemas/itemDTO'
       responses:
         '200':
           description: Successful response
@@ -142,12 +142,7 @@ paths:
       operationId: getItem
       description: Returns item with given ID
       parameters:
-        - name: itemId
-          in: path
-          description: ID of an item
-          required: true
-          schema:
-            type: long
+        - $ref: '#/components/parameters/itemId'
       tags:
         - items
       responses:
@@ -156,35 +151,42 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ItemDTO'
+                $ref: '#/components/schemas/itemDTO'
         '404':
           description: Not found
     put:
       operationId: putItem
       description: Creates new item with given ID or replaces target item with the request content
       parameters:
-        - name: itemId
-          in: path
-          description: ID of an item
-          required: true
-          schema:
-            type: long
+        - $ref: '#/components/parameters/itemId'
       tags:
         - items
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ItemDTO'
+              $ref: '#/components/schemas/itemDTO'
       responses:
         '200':
           description: Successful response
         '400':
           description: Bad request
+    delete:
+      operationId: deleteItem
+      description: Deletes item with given ID
+      parameters:
+        - $ref: '#/components/parameters/itemId'
+      tags:
+        - items
+      responses:
+        '200':
+          description: Successful response
+        '404':
+          description: Not found
 
 components:
   schemas:
-    ItemDTO:
+    itemDTO:
       type: object
       required:
         - id
@@ -194,6 +196,14 @@ components:
           type: long
         name:
           type: string
+  parameters:
+    itemId:
+      name: itemId
+      in: path
+      description: ID of an item
+      required: true
+      schema:
+        type: long
 ```
 
 By default, application runs on port 8080.
@@ -257,6 +267,11 @@ should be returned in default response to a GET http://localhost:8080/items requ
     "name":"Item C"
   }
 ]
+```
+
+Items can be removed by using DELETE method, e.g. item with id 1 can be removed by using the following curl command on Linux:
+```console
+curl -i -X DELETE http://localhost:8080/items/1
 ```
 
 ## Disclaimer

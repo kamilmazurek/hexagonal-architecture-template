@@ -72,7 +72,7 @@ public class ItemsWebAdapterTest {
         //when POST request with item is handled
         adapter.postItem(item);
 
-        //then port was involved in saving data
+        //then port was involved in saving the data
         verify(port, once()).create(adapter.toDomainObject(item));
     }
 
@@ -90,8 +90,26 @@ public class ItemsWebAdapterTest {
         //when PUT request with item is handled
         adapter.putItem(1L, item);
 
-        //then port was involved in saving data
+        //then port was involved in saving the data
         verify(port, once()).insert(1L, adapter.toDomainObject(item));
+    }
+
+    @Test
+    void shouldDeleteItem() {
+        //given port
+        var port = mock(ItemsWebPort.class);
+
+        //and adapter
+        var adapter = new ItemsWebAdapter(port);
+
+        //and item id
+        var itemId = 1L;
+
+        //when DELETE request handled
+        adapter.deleteItem(itemId);
+
+        //then port was involved in deleting the data
+        verify(port, once()).delete(itemId);
     }
 
 }

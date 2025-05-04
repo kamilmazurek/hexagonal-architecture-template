@@ -22,19 +22,19 @@ public class ItemsServiceTest {
 
         //and adapter
         var adapter = mock(ItemsRepositoryAdapter.class);
-        when(adapter.read(1L)).thenReturn(Optional.of(item));
+        when(adapter.read(item.getId())).thenReturn(Optional.of(item));
 
         //and service
         var service = new ItemsService(adapter);
 
         //when item is requested
-        var itemFromService = service.read(1L);
+        var itemFromService = service.read(item.getId());
 
         //then expected item is returned
         assertEquals(item, itemFromService.get());
 
         //and adapter was involved in retrieving the data
-        verify(adapter, once()).read(1L);
+        verify(adapter, once()).read(item.getId());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class ItemsServiceTest {
         //when item is created
         service.create(item);
 
-        //and adapter was involved in saving the data
+        //then adapter is involved in saving the item
         verify(adapter, once()).create(item);
     }
 
@@ -86,10 +86,28 @@ public class ItemsServiceTest {
         var item = Item.builder().id(1L).name("Item A").build();
 
         //when item is inserted
-        service.insert(1L, item);
+        service.insert(item.getId(), item);
 
-        //and adapter was involved in saving the data
-        verify(adapter, once()).insert(1L, item);
+        //then adapter is involved in saving the item
+        verify(adapter, once()).insert(item.getId(), item);
+    }
+
+    @Test
+    void shouldDeleteItem() {
+        //given adapter
+        var adapter = mock(ItemsRepositoryAdapter.class);
+
+        //and service
+        var service = new ItemsService(adapter);
+
+        //and item id
+        var itemId = 1L;
+
+        //when item is deleted
+        service.delete(itemId);
+
+        //then adapter is involved in deleting the item
+        verify(adapter, once()).delete(itemId);
     }
 
 }

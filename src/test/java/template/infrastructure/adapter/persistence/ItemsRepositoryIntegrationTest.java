@@ -6,6 +6,7 @@ import template.AbstractIntegrationTest;
 import template.infrastructure.adapter.persistence.model.ItemEntity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static template.util.TestItems.createTestItemEntities;
 
 public class ItemsRepositoryIntegrationTest extends AbstractIntegrationTest {
@@ -40,12 +41,28 @@ public class ItemsRepositoryIntegrationTest extends AbstractIntegrationTest {
         repository.save(item);
 
         //then item can be retrieved from repository
-        var itemFromRepository = repository.findById(4L);
+        var itemFromRepository = repository.findById(item.getId());
         assertEquals(item.getId(), itemFromRepository.get().getId());
         assertEquals(item.getName(), itemFromRepository.get().getName());
 
         //cleanup
         repository.deleteById(4L);
+    }
+
+    @Test
+    void shouldDeleteItem() {
+        //given item
+        var item = ItemEntity.builder().id(4L).name("Item D").build();
+
+        //and item is in repository
+        repository.save(item);
+        assertEquals(item, repository.findById(item.getId()).get());
+
+        //when item is deleted
+        repository.deleteById(item.getId());
+
+        //then item is no longer in repository
+        assertTrue(repository.findById(item.getId()).isEmpty());
     }
 
     @Test

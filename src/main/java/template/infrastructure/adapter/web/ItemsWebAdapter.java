@@ -35,6 +35,10 @@ public class ItemsWebAdapter {
         port.insert(itemId, toDomainObject(itemDTO));
     }
 
+    public void deleteItem(Long itemId) {
+        port.delete(itemId);
+    }
+
     @VisibleForTesting
     ItemDTO toDTO(Item item) {
         return mapper.map(item, ItemDTO.class);
