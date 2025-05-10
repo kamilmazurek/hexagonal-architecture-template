@@ -101,114 +101,13 @@ mvnw spring-boot:run -Pdev
 
 > **Important:** Operations described below, such as GET, POST, PUT and DELETE, can be performed using Swagger, accessible via http://localhost:8080/swagger-ui/index.html.
 
-API is described in [api.yaml](src/main/resources/api.yaml) and is very simple (as it is just a template):
-```yaml
-openapi: 3.0.0
-info:
-  version: 1.0.0
-  title: Items API
-  description: Template of API using items as an example
-tags:
-  - name: itemsAPI
-paths:
-  /items:
-    get:
-      operationId: getItems
-      description: Returns a list of items
-      tags:
-        - items
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/itemDTO'
-    post:
-      operationId: postItem
-      description: Creates new item with the request content and ID set by server
-      tags:
-        - items
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/itemDTO'
-      responses:
-        '200':
-          description: Successful response
-        '400':
-          description: Bad request
-  /items/{itemId}:
-    get:
-      operationId: getItem
-      description: Returns item with given ID
-      parameters:
-        - $ref: '#/components/parameters/itemId'
-      tags:
-        - items
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/itemDTO'
-        '404':
-          description: Not found
-    put:
-      operationId: putItem
-      description: Creates new item with given ID or replaces target item with the request content
-      parameters:
-        - $ref: '#/components/parameters/itemId'
-      tags:
-        - items
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/itemDTO'
-      responses:
-        '200':
-          description: Successful response
-        '400':
-          description: Bad request
-    delete:
-      operationId: deleteItem
-      description: Deletes item with given ID
-      parameters:
-        - $ref: '#/components/parameters/itemId'
-      tags:
-        - items
-      responses:
-        '200':
-          description: Successful response
-        '404':
-          description: Not found
-
-components:
-  schemas:
-    itemDTO:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: long
-        name:
-          type: string
-  parameters:
-    itemId:
-      name: itemId
-      in: path
-      description: ID of an item
-      required: true
-      schema:
-        type: long
-```
+API is described in [api.yaml](src/main/resources/api.yaml) and is very simple (as it is just a template). It supports POST, GET, PUT and DELETE HTTP methods,
+and thus allows to create, read, update and delete items. It is essentially an implementation of CRUD:
+* ```POST /items``` creates an item
+* ```GET /items``` reads items 
+* ```GET /items/{itemId}``` reads an item 
+* ```PUT /items/{itemId}``` creates or updates an item
+* ```DELETE /items/{itemId}``` deletes an item
 
 By default, application runs on port 8080.
 After successful deployment items can be retrieved by sending GET request to the following URL:
