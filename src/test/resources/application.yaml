@@ -10,3 +10,6 @@ spring:
   sql:
     init:
       data-locations: optional:classpath*:data-test.sql
+springdoc:
+  api-docs:
+    path: /api-docs

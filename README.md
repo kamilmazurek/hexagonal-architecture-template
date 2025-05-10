@@ -1,4 +1,4 @@
-# Hexagonal architecture with Spring Boot
+# Hexagonal architecture with Spring Boot®
 
 This repository contains an implementation of microservice with hexagonal architecture,
 written in Java with Spring Boot.
@@ -23,7 +23,7 @@ support interfaces segregation and fit the concept, so I decided to go with thos
 
 Image below shows concept implemented in this repository:
 
-![Hexagonal Architecture](documentation/hexagonal-architecture.jpg)
+![Hexagonal Architecture](documentation/hexagonal-architecture.png)
 
 Some sources say, that the hexagonal architecture is at the origin of the microservices architecture.
 It makes me think of Spring Boot, which is commonly used to build microservices.
@@ -32,12 +32,14 @@ and seems to me a natural choice to work with such an architecture pattern.
 
 In result, this repository contains a template implementation of microservice with hexagonal architecture,
 written in Java with Spring Boot. It is consisted of:
-* Infrastructure package
+* Infrastructure
   * Adapters (web and persistence)
-* Application package
+  * Swagger, OpenAPI
+* Application
   * Ports
   * Use Cases
   * Domain
+* In-memory database H2
 
 Please note that (as it is just a template) it supports handling HTTP requests and communication with database, however, depending on the needs,
 it is open for further extensions (e.g. Other Client and Other Host presented in the image below).
@@ -96,6 +98,8 @@ mvnw spring-boot:run -Pdev
 ```
 
 ## REST API
+
+> **Important:** Operations described below, such as GET, POST, PUT and DELETE, can be performed using Swagger, accessible via http://localhost:8080/swagger-ui/index.html.
 
 API is described in [api.yaml](src/main/resources/api.yaml) and is very simple (as it is just a template):
 ```yaml
@@ -267,12 +271,27 @@ should be returned in default response to a GET http://localhost:8080/items requ
     "name":"Item C"
   }
 ]
+
 ```
 
 Items can be removed by using DELETE method, e.g. item with id 1 can be removed by using the following curl command on Linux:
 ```console
 curl -i -X DELETE http://localhost:8080/items/1
 ```
+
+Alternatively, such operations (GET, POST, PUT, DELETE) can be performed using Swagger, accessible via http://localhost:8080/swagger-ui/index.html.
+
+## Swagger and OpenAPI /api-docs endpoint
+
+Application comes with Swagger and OpenAPI /api-docs endpoint configured, accessible at the following URLs:
+* http://localhost:8080/swagger-ui/index.html
+* http://localhost:8080/api-docs
+
+Swagger simplifies performing HTTP request, and thus may be useful for testing, or just manually using application:
+
+![Swagger UI](documentation/swagger.png)
+
+OpenAPI /api-docs endpoint can be useful to share API documentation in json format.
 
 ## Disclaimer
 
@@ -285,3 +304,5 @@ IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
 OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
+
+Spring Boot is a trademark of Broadcom Inc. and/or its subsidiaries.
