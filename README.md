@@ -10,6 +10,14 @@ while creating Maven Archetype seemed not flexible enough for me.
 
 The goal was to keep it simple, clean and easy to modify.
 
+## Table of contents
+* [Concept](#concept)
+* [Stack](#stack)
+* [Build and deployment](#build-and-deployment)
+* [REST API](#rest-api)
+* [Swagger and OpenAPI endpoints](#swagger-and-openapi-endpoints)
+* [Disclaimer](#disclaimer)
+
 ## Concept
 
 The hexagonal architecture, also known as the ports and adapters architecture, was invented by Alistair Cockburn.
@@ -180,7 +188,7 @@ curl -i -X DELETE http://localhost:8080/items/1
 
 Alternatively, such operations (GET, POST, PUT, DELETE) can be performed using Swagger, accessible via http://localhost:8080/swagger-ui/index.html.
 
-## Swagger and OpenAPI /api-docs endpoint
+## Swagger and OpenAPI endpoints
 
 Application comes with Swagger and OpenAPI /api-docs endpoint configured, accessible at the following URLs:
 * http://localhost:8080/swagger-ui/index.html
