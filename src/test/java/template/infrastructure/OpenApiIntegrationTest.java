@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import template.AbstractIntegrationTest;
 
 import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.containsString;
 
 public class OpenApiIntegrationTest extends AbstractIntegrationTest {
 
@@ -12,6 +13,8 @@ public class OpenApiIntegrationTest extends AbstractIntegrationTest {
         when()
                 .get("/api-docs")
                 .then()
-                .statusCode(200);
+                .statusCode(200)
+                .body(containsString("Items API"));
     }
+
 }
