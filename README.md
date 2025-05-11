@@ -16,6 +16,7 @@ The goal was to keep it simple, clean and easy to modify.
 * [Build and deployment](#build-and-deployment)
 * [REST API](#rest-api)
 * [Swagger and OpenAPI endpoints](#swagger-and-openapi-endpoints)
+* [Production-ready features](#production-ready-features)
 * [Disclaimer](#disclaimer)
 
 ## Concept
@@ -41,8 +42,12 @@ and seems to me a natural choice to work with such an architecture pattern.
 In result, this repository contains a template implementation of microservice with hexagonal architecture,
 written in Java with Spring Boot. It is consisted of:
 * Infrastructure
-  * Adapters (web and persistence)
-  * Swagger, OpenAPI
+  * Adapters
+    * HTTP (via controllers)
+    * Persistence (via repository)
+  * Swagger
+  * OpenAPI
+  * Spring Boot Actuator
 * Application
   * Ports
   * Use Cases
@@ -111,11 +116,11 @@ mvnw spring-boot:run -Pdev
 
 API is described in [api.yaml](src/main/resources/api.yaml) and is very simple (as it is just a template). It supports POST, GET, PUT and DELETE HTTP methods,
 and thus allows to create, read, update and delete items. It essentially provides CRUD functionality:
-* ```POST /items``` creates an item
-* ```GET /items``` reads items 
-* ```GET /items/{itemId}``` reads an item 
-* ```PUT /items/{itemId}``` creates or updates an item
-* ```DELETE /items/{itemId}``` deletes an item
+* `POST /items` creates an item
+* `GET /items` reads items 
+* `GET /items/{itemId}` reads an item 
+* `PUT /items/{itemId}` creates or updates an item
+* `DELETE /items/{itemId}` deletes an item
 
 By default, application runs on port 8080.
 After successful deployment items can be retrieved by sending GET request to the following URL:
@@ -199,6 +204,54 @@ Swagger simplifies performing HTTP request, and thus may be useful for testing, 
 ![Swagger UI](documentation/swagger.png)
 
 OpenAPI /api-docs endpoint can be useful to share API documentation in json format.
+
+## Production-ready features
+
+Application comes with Spring Boot Actuator configured, and thus allows to use some production-ready features:
+* `/actuator` endpoint: http://localhost:8080/actuator/
+* `/actuator/health` endpoint: http://localhost:8080/actuator/health
+
+List of available actuator-related endpoints can be found using `/actuator` endpoint.
+This list can be changed by modifying `management.endpoints.web.exposure.include` property in [application.yaml](src/main/resources/application.yaml).
+For example, if there is a need for `beans` endpoint, then it can be enabled by adding `beans` to `management.endpoints.web.exposure.include` list, like this:
+```yaml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, beans
+```
+
+More information can be found here: https://docs.spring.io/spring-boot/reference/actuator/endpoints.html
+
+Application health can be checked by using `/actuator/health` endpoint. In response information about running application should be returned:
+```json
+{
+  "status": "UP"
+}
+```
+
+It is possible to configure application to return more detailed information, e.g. about disk usage or database.
+I decided to not enable it by default for security reasons.
+However, it can be achieved by adding following entry to [application.yaml](src/main/resources/application.yaml):
+```yaml
+management:
+  endpoint:
+    health:
+      show-details: "always"
+```
+
+After applying such change, additional information can be obtained from `/actuator/health` endpoint. It also creates new endpoints,
+e.g. `/actuator/health/db` providing information about database:
+```json
+{
+  "status": "UP",
+  "details": {
+    "database": "H2",
+    "validationQuery": "isValid()"
+  }
+}
+```
 
 ## Disclaimer
 
