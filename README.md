@@ -1,6 +1,6 @@
-# Hexagonal architecture with Spring Boot®
+# Hexagonal architecture template
 
-This repository contains an implementation of microservice with hexagonal architecture,
+This repository contains an implementation of microservice with hexagonal architecture (invented by Alistair Cockburn),
 written in Java with Spring Boot.
 
 My main motivation for creating this project is to have an implementation of microservice
@@ -33,12 +33,16 @@ support interfaces segregation and fit the concept, so I decided to go with thos
 
 Image below shows concept implemented in this repository:
 
-![Hexagonal Architecture](documentation/hexagonal-architecture.png)
-
+![Concept diagram](documentation/concept-diagram.png)
+<p align="center">
+<i>concept diagram</i>
+</p>
+<p>
 Some sources say, that the hexagonal architecture is at the origin of the microservices architecture.
 It makes me think of Spring Boot, which is commonly used to build microservices.
 Spring Boot also supports many ways to integrate with other components (such as by HTTP, JDBC, JMS or with Kafka etc.)
 and seems to me a natural choice to work with such an architecture pattern.
+</p>
 
 In result, this repository contains a template implementation of microservice with hexagonal architecture,
 written in Java with Spring Boot. It is consisted of:
@@ -205,6 +209,10 @@ Application comes with Swagger and OpenAPI /api-docs endpoint configured, access
 Swagger simplifies performing HTTP request, and thus may be useful for testing, or just manually using application:
 
 ![Swagger UI](documentation/swagger.png)
+<p align="center">
+<i>Sample Swagger view. For more information about Swagger please visit</i>
+<a href="https://swagger.io"><i>https://swagger.io</i></a>
+</p>
 
 OpenAPI /api-docs endpoint can be useful to share API documentation in json format.
 
@@ -290,6 +298,10 @@ mvnw allure:serve
 In result test report should be displayed in the browser. An excerpt from such a view is presented below:
 
 ![Allure Report](documentation/allure-report.png)
+<p align="center">
+<i>Sample Allure Report. For more information about Allure Report please visit</i>
+<a href="https://allurereport.org/"><i>https://allurereport.org/</i></a>
+</p>
 
 ## Disclaimer
 
@@ -302,5 +314,3 @@ IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
 OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
-
-Spring Boot is a trademark of Broadcom Inc. and/or its subsidiaries.
