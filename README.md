@@ -33,8 +33,10 @@ support interfaces segregation and fit the concept, so I decided to go with thos
 
 Image below shows concept implemented in this repository:
 
-![Hexagonal Architecture](documentation/hexagonal-architecture.png)
-
+![Concept diagram](documentation/concept-diagram.png)
+<p align="center">
+<i>concept diagram</i>
+</p>
 Some sources say, that the hexagonal architecture is at the origin of the microservices architecture.
 It makes me think of Spring Boot, which is commonly used to build microservices.
 Spring Boot also supports many ways to integrate with other components (such as by HTTP, JDBC, JMS or with Kafka etc.)
@@ -205,6 +207,10 @@ Application comes with Swagger and OpenAPI /api-docs endpoint configured, access
 Swagger simplifies performing HTTP request, and thus may be useful for testing, or just manually using application:
 
 ![Swagger UI](documentation/swagger.png)
+<p align="center">
+<i>Items API Swagger view. For more information about Swagger please visit</i>
+<a href="https://swagger.io"><i>https://swagger.io</i></a>
+</p>
 
 OpenAPI /api-docs endpoint can be useful to share API documentation in json format.
 
@@ -290,6 +296,10 @@ mvnw allure:serve
 In result test report should be displayed in the browser. An excerpt from such a view is presented below:
 
 ![Allure Report](documentation/allure-report.png)
+<p align="center">
+<i>Sample report. For more information about Allure Report please visit</i>
+<a href="https://allurereport.org/"><i>https://allurereport.org/</i></a>
+</p>
 
 ## Disclaimer
 
