@@ -6,7 +6,7 @@ written in Java with Spring Boot.
 My main motivation for creating this project is to have an implementation of microservice
 with hexagonal architecture, which can be used as a template, so I can reduce the overhead of the
 repetitive task of creating new skeleton when I want to build something new,
-while creating Maven Archetype seemed not flexible enough for me.
+while creating flexible Maven Archetype seemed to me too expensive compared to the benefits.
 
 The goal was to keep it simple, clean and easy to modify.
 
@@ -17,6 +17,7 @@ The goal was to keep it simple, clean and easy to modify.
 * [REST API](#rest-api)
 * [Swagger and OpenAPI endpoints](#swagger-and-openapi-endpoints)
 * [Production-ready features](#production-ready-features)
+* [Tests](#tests)
 * [Disclaimer](#disclaimer)
 
 ## Concept
@@ -55,7 +56,7 @@ written in Java with Spring Boot. It is consisted of:
 * In-memory database H2
 
 Please note that (as it is just a template) it supports handling HTTP requests and communication with database, however, depending on the needs,
-it is open for further extensions (e.g. Other Client and Other Host presented in the image below).
+it is open for further extensions (e.g. Other Client and Other Host presented in the image above).
 
 ## Stack
 
@@ -64,8 +65,8 @@ H2 seems to me a good choice for creating prototypes - however, it is easy to ch
 with H2 to another database if needed, since the project uses Spring Data.
 API is specified with OpenAPI, which is used to generate the interfaces and data model.
 Additionally, OpenAPI simplifies creating clients for such microservice.
-Project is covered by both unit and integration tests, and comes with Maven Failsafe Plugin
-and Maven Surefire Plugin configured.
+Project is covered by both unit and integration tests, and comes with Maven Surefire Plugin
+and Maven Failsafe Plugin configured.
 
 In summary, the stack looks as follows:
 * Java 21
@@ -75,7 +76,9 @@ In summary, the stack looks as follows:
 * ModelMapper
 * JUnit
 * REST Assured
+* Mockito
 * Apache Maven
+* Allure Report
 * Docker
 
 ## Build and deployment
@@ -252,6 +255,41 @@ e.g. `/actuator/health/db` providing information about database:
   }
 }
 ```
+
+## Tests
+
+Project is covered by both unit and integration tests, and comes with Maven Surefire Plugin
+and Maven Failsafe Plugin configured.
+
+Tests are written using JUnit, REST Assured and Mockito. There are 2 types of tests:
+* Unit tests (suffixed with Test), run with the Maven Surefire Plugin
+* Integration tests (suffixed with IntegrationTest), run with the Maven Failsafe Plugin
+
+Unit tests can be run with the Maven Surefire Plugin using following command:
+```console
+mvnw clean test
+```
+
+Integration tests can be run with the Maven Failsafe Plugin using following command:
+```console
+mvnw clean integration-test
+```
+Please note that this also runs unit tests.
+
+Both test types are also run when standard build is performed:
+```console
+mvnw clean install
+```
+
+Additionally, project comes with Allure Report configured, so it is possible to see test reports via browser.
+It can be achieved by running following commands:
+```console
+mvnw clean integration-test
+mvnw allure:serve
+```
+In result test report should be displayed in the browser. An excerpt from such a view is presented below:
+
+![Allure Report](documentation/allure-report.png)
 
 ## Disclaimer
 
