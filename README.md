@@ -1,7 +1,6 @@
-# Hexagonal architecture template
+# Hexagonal Architecture Template
 
-This repository contains an implementation of microservice with hexagonal architecture (invented by Alistair Cockburn),
-written in Java with Spring Boot.
+This repository contains an implementation of microservice with hexagonal architecture, that can be used as a template.
 
 My main motivation for creating this project is to have an implementation of microservice
 with hexagonal architecture, which can be used as a template, so I can reduce the overhead of the
@@ -38,7 +37,7 @@ Image below shows concept implemented in this repository:
 <i>concept diagram</i>
 </p>
 <p>
-Some sources say, that the hexagonal architecture is at the origin of the microservices architecture.
+According to some sources hexagonal architecture is at the origin of the microservices architecture.
 It makes me think of Spring Boot, which is commonly used to build microservices.
 Spring Boot also supports many ways to integrate with other components (such as by HTTP, JDBC, JMS or with Kafka etc.)
 and seems to me a natural choice to work with such an architecture pattern.
@@ -224,7 +223,8 @@ Application comes with Spring Boot Actuator configured, and thus allows to use s
 
 List of available actuator-related endpoints can be found using `/actuator` endpoint.
 This list can be changed by modifying `management.endpoints.web.exposure.include` property in [application.yaml](src/main/resources/application.yaml).
-For example, if there is a need for `beans` endpoint, then it can be enabled by adding `beans` to `management.endpoints.web.exposure.include` list, like this:
+For example, if there is a need for `beans` endpoint, then it can be enabled by adding `beans` to `management.endpoints.web.exposure.include` list,
+for example like this:
 ```yaml
 management:
   endpoints:
@@ -269,9 +269,9 @@ e.g. `/actuator/health/db` providing information about database:
 Project is covered by both unit and integration tests, and comes with Maven Surefire Plugin
 and Maven Failsafe Plugin configured.
 
-Tests are written using JUnit, REST Assured and Mockito. There are 2 types of tests:
-* Unit tests (suffixed with Test), run with the Maven Surefire Plugin
-* Integration tests (suffixed with IntegrationTest), run with the Maven Failsafe Plugin
+Tests are written using JUnit, REST Assured and Mockito. There are 2 types of tests implemented in this project:
+* Unit tests (suffixed with Test), that are run with the Maven Surefire Plugin
+* Integration tests (suffixed with IntegrationTest), that are run with the Maven Failsafe Plugin
 
 Unit tests can be run with the Maven Surefire Plugin using following command:
 ```console
@@ -305,7 +305,7 @@ In result test report should be displayed in the browser. An excerpt from such a
 
 ## Disclaimer
 
-This software is for educational purposes only.
+THIS SOFTWARE IS FOR EDUCATIONAL PURPOSES ONLY.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
