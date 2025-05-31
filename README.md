@@ -17,6 +17,7 @@ The goal was to keep it simple, clean and easy to modify.
 * [Swagger and OpenAPI endpoints](#swagger-and-openapi-endpoints)
 * [Production-ready features](#production-ready-features)
 * [Tests](#tests)
+* [Additional resources](#additional-resources)
 * [Disclaimer](#disclaimer)
 
 ## Concept
@@ -302,6 +303,13 @@ In result test report should be displayed in the browser. An excerpt from such a
 <i>Sample Allure Report. For more information about Allure Report please visit</i>
 <a href="https://allurereport.org/"><i>https://allurereport.org/</i></a>
 </p>
+
+## Additional resources
+* [Hexagonal Architecture, Alistair Cockburn website](https://alistair.cockburn.us/hexagonal-architecture)
+* [Hexagonal Architecture, Wikipedia](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
+* [Hexagonal Architecture, Medium](https://medium.com/idealo-tech-blog/hexagonal-ports-adapters-architecture-e3617bcf00a0)
+* [Hexagonal Architecture Template, Kamil Mazuek](https://kamilmazurek.pl/side-projects/hexagonal-architecture-template)
+* [Domain-Driven Hexagon](https://github.com/Sairyss/domain-driven-hexagon?tab=readme-ov-file)
 
 ## Disclaimer
 
