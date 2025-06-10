@@ -308,7 +308,7 @@ In result test report should be displayed in the browser. An excerpt from such a
 * [Hexagonal Architecture, Alistair Cockburn website](https://alistair.cockburn.us/hexagonal-architecture)
 * [Hexagonal Architecture, Wikipedia](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
 * [Hexagonal Architecture, Medium](https://medium.com/idealo-tech-blog/hexagonal-ports-adapters-architecture-e3617bcf00a0)
-* [Hexagonal Architecture Template, Kamil Mazurek](https://kamilmazurek.pl/side-projects/hexagonal-architecture-template)
+* [Hexagonal Architecture Template, Kamil Mazurek](https://kamilmazurek.pl/hexagonal-architecture-template)
 * [Domain-Driven Hexagon](https://github.com/Sairyss/domain-driven-hexagon)
 
 ## Disclaimer
