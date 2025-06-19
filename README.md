@@ -1,15 +1,19 @@
 # Hexagonal Architecture Template
+This repository contains an implementation of Java-based microservice,
+that follows the principles of Hexagonal Architecture (also known as Ports and Adapters),
+and can be used as a template.
 
-This repository contains an implementation of microservice with hexagonal architecture, that can be used as a template.
-
-My main motivation for creating this project is to have an implementation of microservice
-with hexagonal architecture, which can be used as a template, so I can reduce the overhead of the
-repetitive task of creating new skeleton when I want to build something new,
-while creating flexible Maven Archetype seemed to me too expensive compared to the benefits.
-
-The goal was to keep it simple, clean and easy to modify.
+The microservice is built with Spring Boot and offers a REST API with a clean,
+modular structure that helps to quickly bootstrap scalable and testable services.
+Key advantages:
+* **Developer Productivity**: Ready-to-use structure speeds up the setup of new projects, ensuring consistent code organization.
+* **Separation of Concerns**: Business logic is isolated from infrastructure code.
+* **Scalability**: The architecture supports growing systems by making it easier to manage and extend code.
+* **Flexibility**: Swapping out adapters (like different databases or communication protocols) requires minimal changes to the core logic.
+* **Ease of Testing**: Decoupled components allow for straightforward unit and integration testing.
 
 ## Table of contents
+* [Motivation](#concept)
 * [Concept](#concept)
 * [Stack](#stack)
 * [Build and deployment](#build-and-deployment)
@@ -19,6 +23,15 @@ The goal was to keep it simple, clean and easy to modify.
 * [Tests](#tests)
 * [Additional resources](#additional-resources)
 * [Disclaimer](#disclaimer)
+
+## Motivation
+
+My main motivation for creating this project is to have an implementation of microservice
+with hexagonal architecture, which can be used as a template, so I can reduce the overhead of the
+repetitive task of creating new skeleton when I want to build something new,
+while creating flexible Maven Archetype seemed to me too expensive compared to the benefits.
+
+The goal was to keep it simple, clean and easy to modify.
 
 ## Concept
 
@@ -310,6 +323,8 @@ In result test report should be displayed in the browser. An excerpt from such a
 * [Hexagonal Architecture, Medium](https://medium.com/idealo-tech-blog/hexagonal-ports-adapters-architecture-e3617bcf00a0)
 * [Hexagonal Architecture Template, Kamil Mazurek](https://kamilmazurek.pl/hexagonal-architecture-template)
 * [Domain-Driven Hexagon](https://github.com/Sairyss/domain-driven-hexagon)
+* [Hexagonal Architecture Template on LibHunt](https://www.libhunt.com/r/hexagonal-architecture-template)
+* [Hexagonal Architecture Template on Open Hub](https://openhub.net/p/hexagonal-architecture-template)
 
 ## Disclaimer
 
@@ -324,3 +339,4 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 Spring Boot is a trademark of Broadcom Inc. and/or its subsidiaries.
+Oracle, Java, MySQL, and NetSuite are registered trademarks of Oracle and/or its affiliates. Other names may be trademarks of their respective owners.
