@@ -46,7 +46,7 @@ support interfaces segregation and fit the concept, so I decided to go with thos
 
 Image below shows concept implemented in this repository:
 
-![Concept diagram](documentation/concept-diagram.png)
+![Concept diagram](documentation/hexagonal-architecture-template-concept-diagram.png)
 <p align="center">
 <i>concept diagram</i>
 </p>
