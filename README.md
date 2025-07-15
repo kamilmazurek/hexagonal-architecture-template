@@ -14,6 +14,31 @@ Key advantages:
 
 The goal was to keep it simple, clean and easy to modify.
 
+## Quickstart
+
+Following steps provide a quick way to get started with the template:
+
+1. Ensure a JDK is available to build and run the code. Temurin, based on OpenJDK and available from [adoptium.net](https://adoptium.net/), can be used for this purpose.
+2. Download the source code either by cloning the repository with Git or by downloading the ZIP file. If you downloaded the ZIP, extract it. Then navigate to the hexagonal-architecture-template folder.
+3. Start the application using the development profile to load predefined data:
+    ```shell
+    mvnw spring-boot:run -Pdev
+    ```
+4. Verify that the application is running by sending a GET request to the following URL (you can simply open it in a browser):
+    ```console
+    http://localhost:8080/items/1
+    ```
+   The following item should be returned in the response:
+    ```json
+    [
+      {
+        "id": 1,
+        "name":"Item A"
+      }
+    ]
+    ```
+5. Modify the source code to suit your needs, rebuild the project, and run the application 🚀.
+
 ## Table of contents
 * [Motivation](#concept)
 * [Concept](#concept)
@@ -24,6 +49,7 @@ The goal was to keep it simple, clean and easy to modify.
 * [Production-ready features](#production-ready-features)
 * [Tests](#tests)
 * [Additional resources](#additional-resources)
+* [Author](#author)
 * [Disclaimer](#disclaimer)
 
 ## Motivation
@@ -321,10 +347,12 @@ In result test report should be displayed in the browser. An excerpt from such a
 * [Hexagonal Architecture, Alistair Cockburn website](https://alistair.cockburn.us/hexagonal-architecture)
 * [Hexagonal Architecture, Wikipedia](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
 * [Hexagonal Architecture, Medium](https://medium.com/idealo-tech-blog/hexagonal-ports-adapters-architecture-e3617bcf00a0)
-* [Hexagonal Architecture Template, Kamil Mazurek](https://kamilmazurek.pl/hexagonal-architecture-template)
 * [Domain-Driven Hexagon](https://github.com/Sairyss/domain-driven-hexagon)
 * [Hexagonal Architecture Template on LibHunt](https://www.libhunt.com/r/hexagonal-architecture-template)
-* [Hexagonal Architecture Template on Open Hub](https://openhub.net/p/hexagonal-architecture-template)
+
+## Author
+
+[Hexagonal Architecture Template](https://kamilmazurek.pl/hexagonal-architecture-template)  was created by  [Kamil Mazurek](https://kamilmazurek.pl), a Software Engineer based in Warsaw, Poland.
 
 ## Disclaimer
 
