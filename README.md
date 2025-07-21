@@ -1,3 +1,6 @@
+> This content is also available in an enhanced and regularly updated form at  
+> [kamilmazurek.pl/hexagonal-architecture-template](https://kamilmazurek.pl/hexagonal-architecture-template)
+
 # Hexagonal Architecture Template
 This repository contains an implementation of Java-based microservice,
 that follows the principles of Hexagonal Architecture (also known as Ports and Adapters),
