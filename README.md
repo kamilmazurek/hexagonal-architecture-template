@@ -12,7 +12,7 @@ Key advantages:
 * **Flexibility**: Swapping out adapters (like different databases or communication protocols) requires minimal changes to the core logic.
 * **Ease of Testing**: Decoupled components allow for straightforward unit and integration testing.
 
-The goal was to keep it simple, clean and easy to modify.
+The goal is to keep it simple, clean and easy to modify.
 
 ## Quickstart
 
@@ -86,16 +86,16 @@ and seems to me a natural choice to work with such an architecture pattern.
 In result, this repository contains a template implementation of microservice with hexagonal architecture,
 written in Java with Spring Boot. It is consisted of:
 * Infrastructure
-  * Adapters
-    * HTTP (via controllers)
-    * Persistence (via repository)
-  * Swagger
-  * OpenAPI
-  * Spring Boot Actuator
+    * Adapters
+        * HTTP (via controllers)
+        * Persistence (via repository)
+    * Swagger
+    * OpenAPI
+    * Spring Boot Actuator
 * Application
-  * Ports
-  * Use Cases
-  * Domain
+    * Ports
+    * Use Cases
+    * Domain
 * In-memory database H2
 
 Please note that (as it is just a template) it supports handling HTTP requests and communication with database, however, depending on the needs,
@@ -163,8 +163,8 @@ mvnw spring-boot:run -Pdev
 API is described in [api.yaml](src/main/resources/api.yaml) and is very simple (as it is just a template). It supports POST, GET, PUT and DELETE HTTP methods,
 and thus allows to create, read, update and delete items. It essentially provides CRUD functionality:
 * `POST /items` creates an item
-* `GET /items` reads items 
-* `GET /items/{itemId}` reads an item 
+* `GET /items` reads items
+* `GET /items/{itemId}` reads an item
 * `PUT /items/{itemId}` creates or updates an item
 * `DELETE /items/{itemId}` deletes an item
 
@@ -194,6 +194,9 @@ curl -i -X PUT http://localhost:8080/items/1 \
 ```
 
 Once the item has been successfully added, it should be returned in response to a GET http://localhost:8080/items request:
+```console
+http://localhost:8080/items
+```
 ```json
 [
   {
@@ -204,6 +207,9 @@ Once the item has been successfully added, it should be returned in response to 
 ```  
 
 Item can also be retrieved by ID using items/{ID} path, e.g. by sending GET http://localhost:8080/items/1 request:
+```console
+http://localhost:8080/items/1
+```
 ```json
 {
   "id": 1,
@@ -214,6 +220,9 @@ Item can also be retrieved by ID using items/{ID} path, e.g. by sending GET http
 Additionally, if application has been started with dev profile,
 some test data should be automatically added to the database, and thus following items
 should be returned in default response to a GET http://localhost:8080/items request:
+```console
+http://localhost:8080/items
+```
 ```json
 [
   {
@@ -276,6 +285,9 @@ management:
 More information can be found here: https://docs.spring.io/spring-boot/reference/actuator/endpoints.html
 
 Application health can be checked by using `/actuator/health` endpoint. In response information about running application should be returned:
+```console
+http://localhost:8080/actuator/health
+```
 ```json
 {
   "status": "UP"
@@ -294,6 +306,9 @@ management:
 
 After applying such change, additional information can be obtained from `/actuator/health` endpoint. It also creates new endpoints,
 e.g. `/actuator/health/db` providing information about database:
+```console
+http://localhost:8080/actuator/health/db
+```
 ```json
 {
   "status": "UP",
@@ -352,7 +367,7 @@ In result test report should be displayed in the browser. An excerpt from such a
 
 ## Author
 
-[Hexagonal Architecture Template](https://kamilmazurek.pl/hexagonal-architecture-template)  was created by  [Kamil Mazurek](https://kamilmazurek.pl), a Software Engineer based in Warsaw, Poland.
+Created by [Kamil Mazurek](https://kamilmazurek.pl), a Software Engineer based in Warsaw, Poland.
 
 ## Disclaimer
 
