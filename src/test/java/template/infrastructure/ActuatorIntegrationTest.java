@@ -6,7 +6,7 @@ import template.AbstractIntegrationTest;
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.containsString;
 
-public class ActuatorIntegrationTest extends AbstractIntegrationTest {
+class ActuatorIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void shouldReturnResponseFromActuatorEndpoint() {

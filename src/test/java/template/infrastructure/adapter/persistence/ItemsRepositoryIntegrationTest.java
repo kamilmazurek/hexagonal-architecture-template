@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static template.util.TestItems.createTestItemEntities;
 
-public class ItemsRepositoryIntegrationTest extends AbstractIntegrationTest {
+class ItemsRepositoryIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
     private ItemsRepository repository;

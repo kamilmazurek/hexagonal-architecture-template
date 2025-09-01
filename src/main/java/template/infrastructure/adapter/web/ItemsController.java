@@ -54,7 +54,7 @@ public class ItemsController implements ItemsApi {
         return ResponseEntity.ok().build();
     }
 
-    private static boolean hasValidId(Long itemId, ItemDTO itemDTO) {
+    private boolean hasValidId(Long itemId, ItemDTO itemDTO) {
         return itemDTO.getId() != null && Objects.equals(itemId, itemDTO.getId());
     }
 

@@ -2,6 +2,7 @@ package template.infrastructure.adapter.persistence;
 
 import org.junit.jupiter.api.Test;
 import template.application.domain.model.Item;
+import template.application.exception.ItemIdAlreadySetException;
 import template.infrastructure.adapter.persistence.model.ItemEntity;
 
 import java.util.Optional;
@@ -15,9 +16,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItemEntities;
 import static template.util.TestItems.createTestItems;
-import static template.util.TestUtils.once;
 
-public class ItemsRepositoryAdapterTest {
+class ItemsRepositoryAdapterTest {
 
     @Test
     void shouldReadItem() {
@@ -34,11 +34,11 @@ public class ItemsRepositoryAdapterTest {
         //when item is requested
         var itemFromRepository = adapter.read(item.getId());
 
-        //then expected items are returned
+        //then expected item is returned
         assertEquals(adapter.toDomainObject(item), itemFromRepository.get());
 
         //and repository was queried for data
-        verify(repository, once()).findById(item.getId());
+        verify(repository).findById(item.getId());
     }
 
 
@@ -58,7 +58,7 @@ public class ItemsRepositoryAdapterTest {
         assertEquals(createTestItems(), items);
 
         //and repository was queried for data
-        verify(repository, once()).findAll();
+        verify(repository).findAll();
     }
 
     @Test
@@ -75,10 +75,10 @@ public class ItemsRepositoryAdapterTest {
         //when item is created
         adapter.create(item);
 
-        //then item is put to repository
+        //then item is saved in repository
         var expectedEntity = adapter.toEntity(item);
         expectedEntity.setId(1L);
-        verify(repository, once()).save(expectedEntity);
+        verify(repository).save(expectedEntity);
     }
 
     @Test
@@ -93,13 +93,13 @@ public class ItemsRepositoryAdapterTest {
         var item = Item.builder().id(1L).name("Item A").build();
 
         //when item is created
-        var exception = assertThrows(IllegalArgumentException.class, () -> adapter.create(item));
+        var exception = assertThrows(ItemIdAlreadySetException.class, () -> adapter.create(item));
 
         //then exception is thrown
-        var expectedMessage = "ID should be null, so it will be set by adapter, but it has been already set to 1 instead";
+        var expectedMessage = "Item ID must be null when creating a new item. Expected null so the adapter can assign a new ID, but received: 1.";
         assertEquals(expectedMessage, exception.getMessage());
 
-        //and item has not been put to repository
+        //and item has not been saved in repository
         verify(repository, never()).save(any());
     }
 
@@ -117,8 +117,8 @@ public class ItemsRepositoryAdapterTest {
         //when item is inserted
         adapter.insert(item.getId(), item);
 
-        //then item is put to repository
-        verify(repository, once()).save(adapter.toEntity(item));
+        //then item is saved in repository
+        verify(repository).save(adapter.toEntity(item));
     }
 
     @Test
@@ -136,7 +136,7 @@ public class ItemsRepositoryAdapterTest {
         adapter.delete(itemId);
 
         //then item is deleted from repository
-        verify(repository, once()).deleteById(itemId);
+        verify(repository).deleteById(itemId);
     }
 
 }
