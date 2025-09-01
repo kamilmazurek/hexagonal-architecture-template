@@ -11,9 +11,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItems;
-import static template.util.TestUtils.once;
 
-public class ItemsServiceTest {
+class ItemsServiceTest {
 
     @Test
     void shouldReadItem() {
@@ -34,7 +33,7 @@ public class ItemsServiceTest {
         assertEquals(item, itemFromService.get());
 
         //and adapter was involved in retrieving the data
-        verify(adapter, once()).read(item.getId());
+        verify(adapter).read(item.getId());
     }
 
     @Test
@@ -53,7 +52,7 @@ public class ItemsServiceTest {
         assertEquals(createTestItems(), items);
 
         //and adapter was involved in retrieving the data
-        verify(adapter, once()).read();
+        verify(adapter).read();
     }
 
     @Test
@@ -71,7 +70,7 @@ public class ItemsServiceTest {
         service.create(item);
 
         //then adapter is involved in saving the item
-        verify(adapter, once()).create(item);
+        verify(adapter).create(item);
     }
 
     @Test
@@ -89,7 +88,7 @@ public class ItemsServiceTest {
         service.insert(item.getId(), item);
 
         //then adapter is involved in saving the item
-        verify(adapter, once()).insert(item.getId(), item);
+        verify(adapter).insert(item.getId(), item);
     }
 
     @Test
@@ -107,7 +106,7 @@ public class ItemsServiceTest {
         service.delete(itemId);
 
         //then adapter is involved in deleting the item
-        verify(adapter, once()).delete(itemId);
+        verify(adapter).delete(itemId);
     }
 
 }

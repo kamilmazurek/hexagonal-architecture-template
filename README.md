@@ -43,7 +43,7 @@ Following steps provide a quick way to get started with the template:
 5. Modify the source code to suit your needs, rebuild the project, and run the application 🚀.
 
 ## Table of contents
-* [Motivation](#concept)
+* [Motivation](#motivation)
 * [Concept](#concept)
 * [Stack](#stack)
 * [Build and deployment](#build-and-deployment)
@@ -75,7 +75,7 @@ support interfaces segregation and fit the concept, so I decided to go with thos
 
 Image below shows concept implemented in this repository:
 
-![Concept diagram](documentation/hexagonal-architecture-template-concept-diagram.png)
+![Concept diagram](readme-images/hexagonal-architecture-template-concept-diagram.png)
 <p align="center">
 <i>concept diagram</i>
 </p>
@@ -99,6 +99,7 @@ written in Java with Spring Boot. It is consisted of:
     * Ports
     * Use Cases
     * Domain
+    * Exception
 * In-memory database H2
 
 Please note that (as it is just a template) it supports handling HTTP requests and communication with database, however, depending on the needs,
@@ -259,7 +260,7 @@ Application comes with Swagger and OpenAPI /api-docs endpoint configured, access
 
 Swagger simplifies performing HTTP request, and thus may be useful for testing, or just manually using application:
 
-![Swagger UI](documentation/swagger.png)
+![Swagger UI](readme-images/swagger.png)
 <p align="center">
 <i>Sample Swagger view. For more information about Swagger please visit</i>
 <a href="https://swagger.io"><i>https://swagger.io</i></a>
@@ -355,7 +356,7 @@ mvnw allure:serve
 ```
 In result test report should be displayed in the browser. An excerpt from such a view is presented below:
 
-![Allure Report](documentation/allure-report.png)
+![Allure Report](readme-images/allure-report.png)
 <p align="center">
 <i>Sample Allure Report. For more information about Allure Report please visit</i>
 <a href="https://allurereport.org/"><i>https://allurereport.org/</i></a>
@@ -369,13 +370,13 @@ In result test report should be displayed in the browser. An excerpt from such a
 * [Hexagonal Architecture Template on LibHunt](https://www.libhunt.com/r/hexagonal-architecture-template)
 
 ## Author
-
 Created by [Kamil Mazurek](https://kamilmazurek.pl), a Software Engineer based in Warsaw, Poland.
+You can also find me on my [LinkedIn profile - Kamil Mazurek](https://www.linkedin.com/in/kamil-mazurek).
 
 ## Disclaimer
 
 THIS SOFTWARE IS FOR EDUCATIONAL PURPOSES ONLY. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
-THE AUTHOUR SHALL NOT BE LIABLE FOR ANY DAMAGES, CLAIM OR OTHER LIABILITY ARISING FROM THE USE OF THE SOFTWARE
+THE AUTHOR SHALL NOT BE LIABLE FOR ANY DAMAGES, CLAIM OR OTHER LIABILITY ARISING FROM THE USE OF THE SOFTWARE
 OR OTHER DEALINGS IN THE SOFTWARE.
 
 Spring Boot is a trademark of Broadcom Inc. and/or its subsidiaries.

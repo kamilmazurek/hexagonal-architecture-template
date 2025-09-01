@@ -14,9 +14,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItemDTOs;
-import static template.util.TestUtils.once;
 
-public class ItemsControllerTest {
+class ItemsControllerTest {
 
     @Test
     void shouldGetItem() {
@@ -40,7 +39,7 @@ public class ItemsControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
         //and adapter was involved in retrieving the data
-        verify(adapter, once()).getItem(1L);
+        verify(adapter).getItem(1L);
     }
 
     @Test
@@ -62,7 +61,7 @@ public class ItemsControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 
         //and adapter was involved in retrieving the data
-        verify(adapter, once()).getItem(1L);
+        verify(adapter).getItem(1L);
     }
 
     @Test
@@ -84,7 +83,7 @@ public class ItemsControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
         //and adapter was involved in retrieving the data
-        verify(adapter, once()).getItems();
+        verify(adapter).getItems();
     }
 
     @Test
@@ -105,7 +104,7 @@ public class ItemsControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
         //and adapter was involved in saving the data
-        verify(adapter, once()).postItem(item);
+        verify(adapter).postItem(item);
     }
 
     @Test
@@ -126,7 +125,7 @@ public class ItemsControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
         //and adapter was not involved in saving the data
-        verify(adapter, never()).putItem(any(), any());
+        verify(adapter, never()).postItem(any());
     }
 
     @Test
@@ -147,7 +146,7 @@ public class ItemsControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
         //and adapter was involved in saving the data
-        verify(adapter, once()).putItem(1L, item);
+        verify(adapter).putItem(1L, item);
     }
 
     @Test
@@ -190,7 +189,7 @@ public class ItemsControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
         //and adapter was involved in deleting the data
-        verify(adapter, once()).deleteItem(item.getId());
+        verify(adapter).deleteItem(item.getId());
     }
 
     @Test

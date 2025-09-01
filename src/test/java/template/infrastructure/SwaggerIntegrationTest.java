@@ -5,7 +5,7 @@ import template.AbstractIntegrationTest;
 
 import static io.restassured.RestAssured.when;
 
-public class SwaggerIntegrationTest extends AbstractIntegrationTest {
+class SwaggerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void shouldReturnResponseFromSwaggerEndpoint() {

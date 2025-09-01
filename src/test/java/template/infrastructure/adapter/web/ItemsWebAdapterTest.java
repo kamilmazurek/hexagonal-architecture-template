@@ -13,9 +13,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItemDTOs;
 import static template.util.TestItems.createTestItems;
-import static template.util.TestUtils.once;
 
-public class ItemsWebAdapterTest {
+class ItemsWebAdapterTest {
 
     @Test
     void shouldGetItem() {
@@ -36,7 +35,7 @@ public class ItemsWebAdapterTest {
         assertEquals(adapter.toDTO(item), itemFromAdapter.get());
 
         //and port was involved in retrieving the data
-        verify(port, once()).read(1L);
+        verify(port).read(1L);
     }
 
     @Test
@@ -55,7 +54,7 @@ public class ItemsWebAdapterTest {
         assertEquals(createTestItemDTOs(), items);
 
         //and port was involved in retrieving the data
-        verify(port, once()).read();
+        verify(port).read();
     }
 
     @Test
@@ -73,7 +72,7 @@ public class ItemsWebAdapterTest {
         adapter.postItem(item);
 
         //then port was involved in saving the data
-        verify(port, once()).create(adapter.toDomainObject(item));
+        verify(port).create(adapter.toDomainObject(item));
     }
 
     @Test
@@ -91,7 +90,7 @@ public class ItemsWebAdapterTest {
         adapter.putItem(1L, item);
 
         //then port was involved in saving the data
-        verify(port, once()).insert(1L, adapter.toDomainObject(item));
+        verify(port).insert(1L, adapter.toDomainObject(item));
     }
 
     @Test
@@ -109,7 +108,7 @@ public class ItemsWebAdapterTest {
         adapter.deleteItem(itemId);
 
         //then port was involved in deleting the data
-        verify(port, once()).delete(itemId);
+        verify(port).delete(itemId);
     }
 
 }
