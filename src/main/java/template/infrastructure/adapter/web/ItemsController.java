@@ -13,8 +13,9 @@ import java.util.Objects;
 @AllArgsConstructor
 public class ItemsController implements ItemsApi {
 
-    private ItemsWebAdapter adapter;
+    private final ItemsWebAdapter adapter;
 
+    @Override
     public ResponseEntity<ItemDTO> getItem(Long id) {
         return adapter.getItem(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }

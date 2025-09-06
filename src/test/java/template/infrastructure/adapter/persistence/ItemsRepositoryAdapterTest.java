@@ -1,6 +1,7 @@
 package template.infrastructure.adapter.persistence;
 
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import template.application.domain.model.Item;
 import template.application.exception.ItemIdAlreadySetException;
 import template.infrastructure.adapter.persistence.model.ItemEntity;
@@ -29,7 +30,7 @@ class ItemsRepositoryAdapterTest {
         when(repository.findById(item.getId())).thenReturn(Optional.of(item));
 
         //and adapter
-        var adapter = new ItemsRepositoryAdapter(repository);
+        var adapter = new ItemsRepositoryAdapter(repository, new ModelMapper());
 
         //when item is requested
         var itemFromRepository = adapter.read(item.getId());
@@ -49,7 +50,7 @@ class ItemsRepositoryAdapterTest {
         when(repository.findAll()).thenReturn(createTestItemEntities());
 
         //and adapter
-        var adapter = new ItemsRepositoryAdapter(repository);
+        var adapter = new ItemsRepositoryAdapter(repository, new ModelMapper());
 
         //when items are requested
         var items = adapter.read();
@@ -67,7 +68,7 @@ class ItemsRepositoryAdapterTest {
         var repository = mock(ItemsRepository.class);
 
         //and adapter
-        var adapter = new ItemsRepositoryAdapter(repository);
+        var adapter = new ItemsRepositoryAdapter(repository, new ModelMapper());
 
         //and item
         var item = Item.builder().name("Item A").build();
@@ -82,40 +83,18 @@ class ItemsRepositoryAdapterTest {
     }
 
     @Test
-    void shouldNotCreateItem() {
+    void shouldUpsertItem() {
         //given repository
         var repository = mock(ItemsRepository.class);
 
         //and adapter
-        var adapter = new ItemsRepositoryAdapter(repository);
+        var adapter = new ItemsRepositoryAdapter(repository, new ModelMapper());
 
         //and item
         var item = Item.builder().id(1L).name("Item A").build();
 
-        //when item is created
-        var exception = assertThrows(ItemIdAlreadySetException.class, () -> adapter.create(item));
-
-        //then exception is thrown
-        var expectedMessage = "Item ID must be null when creating a new item. Expected null so the adapter can assign a new ID, but received: 1.";
-        assertEquals(expectedMessage, exception.getMessage());
-
-        //and item has not been saved in repository
-        verify(repository, never()).save(any());
-    }
-
-    @Test
-    void shouldInsertItem() {
-        //given repository
-        var repository = mock(ItemsRepository.class);
-
-        //and adapter
-        var adapter = new ItemsRepositoryAdapter(repository);
-
-        //and item
-        var item = Item.builder().id(1L).name("Item A").build();
-
-        //when item is inserted
-        adapter.insert(item.getId(), item);
+        //when item is upserted
+        adapter.upsert(item.getId(), item);
 
         //then item is saved in repository
         verify(repository).save(adapter.toEntity(item));
@@ -127,7 +106,7 @@ class ItemsRepositoryAdapterTest {
         var repository = mock(ItemsRepository.class);
 
         //and adapter
-        var adapter = new ItemsRepositoryAdapter(repository);
+        var adapter = new ItemsRepositoryAdapter(repository, new ModelMapper());
 
         //and item id
         var itemId = 1L;

@@ -15,9 +15,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ItemsWebAdapter {
 
-    private ItemsWebPort port;
+    private final ItemsWebPort port;
 
-    private final ModelMapper mapper = new ModelMapper();
+    private final ModelMapper mapper;
 
     public Optional<ItemDTO> getItem(Long id) {
         return port.read(id).map(this::toDTO);
@@ -32,7 +32,7 @@ public class ItemsWebAdapter {
     }
 
     public void putItem(Long itemId, ItemDTO itemDTO) {
-        port.insert(itemId, toDomainObject(itemDTO));
+        port.upsert(itemId, toDomainObject(itemDTO));
     }
 
     public void deleteItem(Long itemId) {
