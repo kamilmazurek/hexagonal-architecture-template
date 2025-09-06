@@ -129,7 +129,7 @@ class ItemsControllerTest {
     }
 
     @Test
-    void shouldInsertItemByPutRequest() {
+    void shouldUpsertItemByPutRequest() {
         //given adapter
         var adapter = mock(ItemsWebAdapter.class);
 

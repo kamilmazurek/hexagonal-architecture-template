@@ -2,12 +2,15 @@ package template.application.domain.service;
 
 import org.junit.jupiter.api.Test;
 import template.application.domain.model.Item;
+import template.application.exception.ItemIdAlreadySetException;
 import template.infrastructure.adapter.persistence.ItemsRepositoryAdapter;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItems;
@@ -74,7 +77,7 @@ class ItemsServiceTest {
     }
 
     @Test
-    void shouldInsertItem() {
+    void shouldNotCreateItem() {
         //given adapter
         var adapter = mock(ItemsRepositoryAdapter.class);
 
@@ -84,11 +87,33 @@ class ItemsServiceTest {
         //and item
         var item = Item.builder().id(1L).name("Item A").build();
 
-        //when item is inserted
-        service.insert(item.getId(), item);
+        //when item is created
+        var exception = assertThrows(ItemIdAlreadySetException.class, () -> service.create(item));
+
+        //then exception is thrown
+        var expectedMessage = "Item ID must be null when creating a new item. Expected null so the adapter can assign a new ID, but received: 1.";
+        assertEquals(expectedMessage, exception.getMessage());
+
+        //and adapter was not involved in saving the item
+        verify(adapter, never()).create(item);
+    }
+
+    @Test
+    void shouldUpsertItem() {
+        //given adapter
+        var adapter = mock(ItemsRepositoryAdapter.class);
+
+        //and service
+        var service = new ItemsService(adapter);
+
+        //and item
+        var item = Item.builder().id(1L).name("Item A").build();
+
+        //when item is upserted
+        service.upsert(item.getId(), item);
 
         //then adapter is involved in saving the item
-        verify(adapter).insert(item.getId(), item);
+        verify(adapter).upsert(item.getId(), item);
     }
 
     @Test

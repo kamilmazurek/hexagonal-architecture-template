@@ -2,8 +2,8 @@ package template.application.usecase;
 
 import template.application.domain.model.Item;
 
-public interface Insert {
+public interface Upsert {
 
-    void insert(Long itemId, Item item);
+    void upsert(Long itemId, Item item);
 
 }

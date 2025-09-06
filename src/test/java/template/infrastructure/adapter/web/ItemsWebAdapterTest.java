@@ -1,6 +1,7 @@
 package template.infrastructure.adapter.web;
 
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import template.api.model.ItemDTO;
 import template.application.domain.model.Item;
 import template.application.port.ItemsWebPort;
@@ -26,7 +27,7 @@ class ItemsWebAdapterTest {
         when(port.read(1L)).thenReturn(Optional.of(item));
 
         //and adapter
-        var adapter = new ItemsWebAdapter(port);
+        var adapter = new ItemsWebAdapter(port, new ModelMapper());
 
         //when item is requested
         var itemFromAdapter = adapter.getItem(1L);
@@ -45,7 +46,7 @@ class ItemsWebAdapterTest {
         when(port.read()).thenReturn(createTestItems());
 
         //and adapter
-        var adapter = new ItemsWebAdapter(port);
+        var adapter = new ItemsWebAdapter(port, new ModelMapper());
 
         //when items are requested
         var items = adapter.getItems();
@@ -63,7 +64,7 @@ class ItemsWebAdapterTest {
         var port = mock(ItemsWebPort.class);
 
         //and adapter
-        var adapter = new ItemsWebAdapter(port);
+        var adapter = new ItemsWebAdapter(port, new ModelMapper());
 
         //and item
         var item = new ItemDTO().name("Item A");
@@ -76,12 +77,12 @@ class ItemsWebAdapterTest {
     }
 
     @Test
-    void shouldInsertItemByPutRequest() {
+    void shouldUpsertItemByPutRequest() {
         //given port
         var port = mock(ItemsWebPort.class);
 
         //and adapter
-        var adapter = new ItemsWebAdapter(port);
+        var adapter = new ItemsWebAdapter(port, new ModelMapper());
 
         //and item
         var item = new ItemDTO().id(1L).name("Item A");
@@ -90,7 +91,7 @@ class ItemsWebAdapterTest {
         adapter.putItem(1L, item);
 
         //then port was involved in saving the data
-        verify(port).insert(1L, adapter.toDomainObject(item));
+        verify(port).upsert(1L, adapter.toDomainObject(item));
     }
 
     @Test
@@ -99,7 +100,7 @@ class ItemsWebAdapterTest {
         var port = mock(ItemsWebPort.class);
 
         //and adapter
-        var adapter = new ItemsWebAdapter(port);
+        var adapter = new ItemsWebAdapter(port, new ModelMapper());
 
         //and item id
         var itemId = 1L;

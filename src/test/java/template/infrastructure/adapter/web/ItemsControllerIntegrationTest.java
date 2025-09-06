@@ -89,7 +89,7 @@ class ItemsControllerIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void shouldInsertItemByPutRequest() throws JsonProcessingException {
+    void shouldUpsertItemByPutRequest() throws JsonProcessingException {
         //given item
         var item = new ItemDTO().id(4L).name("Item D");
 

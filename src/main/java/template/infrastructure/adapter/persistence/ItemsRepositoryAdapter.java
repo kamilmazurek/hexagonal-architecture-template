@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import template.application.domain.model.Item;
-import template.application.exception.ItemIdAlreadySetException;
 import template.application.port.ItemsRepositoryPort;
 import template.infrastructure.adapter.persistence.model.ItemEntity;
 
@@ -16,9 +15,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ItemsRepositoryAdapter implements ItemsRepositoryPort {
 
-    private ItemsRepository repository;
+    private final ItemsRepository repository;
 
-    private final ModelMapper mapper = new ModelMapper();
+    private final ModelMapper mapper;
 
     @Override
     public Optional<Item> read(Long id) {
@@ -32,19 +31,15 @@ public class ItemsRepositoryAdapter implements ItemsRepositoryPort {
 
     @Override
     public void create(Item item) {
-        if (item.getId() != null) {
-            throw new ItemIdAlreadySetException(item.getId());
-        }
-
         var itemEntity = toEntity(item);
-        var maxID = repository.findMaxID();
+        var maxID = Optional.ofNullable(repository.findMaxID()).orElse(0L);
         itemEntity.setId(maxID + 1);
 
         repository.save(itemEntity);
     }
 
     @Override
-    public void insert(Long itemId, Item item) {
+    public void upsert(Long itemId, Item item) {
         item.setId(itemId);
         repository.save(toEntity(item));
     }
