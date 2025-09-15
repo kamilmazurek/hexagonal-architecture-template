@@ -76,13 +76,12 @@ The image below shows the concept implemented in this project:
 
 ![Concept diagram](readme-images/hexagonal-architecture-template-concept-diagram.png)
 <p align="center">
-<i>concept diagram</i>
+<i>Hexagonal Architecture Template concept diagram</i>
 </p>
-<p>
+
 According to some sources, Hexagonal Architecture is at the origin of microservices architecture.
 It makes me think of Spring Boot, which is commonly used to build microservices.
 Spring Boot also supports many ways to integrate with other components (such as HTTP, JDBC, JMS, or Kafka) and seems to me a natural choice to work with such an architecture pattern.
-</p>
 
 As a result, this project contains a template implementation of a microservice with Hexagonal Architecture, written in Java with Spring Boot.
 The implementation is designed to be modular, flexible, and easy to extend. It consists of:
@@ -117,6 +116,7 @@ Its clear separation of concerns also helps teams work more independently and sp
 
 However, for small or simple applications, or projects with very tight deadlines, the added structure of Hexagonal Architecture might be unnecessary overhead.
 In such cases, a simpler, more straightforward architecture could be easier to implement and maintain without compromising too much on quality.
+If that sounds like a better fit, you might be interested in the [Layered Architecture Template](https://kamilmazurek.pl/layered-architecture-template).
 
 Ultimately, choosing Hexagonal Architecture depends on your project's complexity and long-term goals.
 When done right, it can make your application more resilient, easier to test, and simpler to evolve as needs change.
@@ -444,7 +444,7 @@ The application includes Swagger and a configured OpenAPI /api-docs endpoint, ac
 Swagger simplifies making HTTP requests by providing an interactive interface to easily test and explore API endpoints.
 This makes it especially useful for testing or manually interacting with the application without needing extra tools or clients:
 
-![Swagger UI](readme-images/swagger.png)
+![Swagger UI](readme-images/sample-swagger-view.png)
 <p align="center">
 <i>Sample Swagger view. For more information about Swagger please visit</i>
 <a href="https://swagger.io"><i>https://swagger.io</i></a>
@@ -496,7 +496,7 @@ management:
 ```
 
 After applying this change, additional detailed information can be retrieved from the `/actuator/health` endpoint.
-It also enables new endpoints, such as `/actuator/health/db`, which provides information about database:
+It also enables new endpoints, such as `/actuator/health/db`, which provide information about the database:
 ```console
 http://localhost:8080/actuator/health/db
 ```
@@ -513,14 +513,15 @@ http://localhost:8080/actuator/health/db
 This set of production-ready features provides valuable insights and control over your application’s health and behavior.
 Properly configuring and securing these endpoints ensures you can monitor your app effectively while maintaining a strong security posture.
 
-> **Important:** In production environments, actuator endpoints should be protected to prevent unauthorized access. Consider limiting access through authentication and authorization, or exposing only essential endpoints. Exercise caution when enabling detailed health data or other sensitive information.
+**Important:** In production environments, actuator endpoints should be secured to prevent unauthorized access.
+It is recommended to limit access through authentication and authorization. Exercise caution when enabling detailed health data or other sensitive information.
 
 ## Tests
 
 The project is covered by both unit and integration tests, with the Maven Surefire Plugin and Maven Failsafe Plugin pre-configured to run them.
 Tests are written using JUnit, Mockito, and REST Assured, covering both business logic and API layers. There are two types of tests:
-* Unit tests (*Test.java) focus on individual components like services or adapters and are run by Surefire.
-* Integration tests (*IntegrationTest.java) verify how application components work together (e.g., controllers, repositories) and are run by Failsafe.
+* Unit tests (*Test.java) are run by Surefire and focus on individual components like services or adapters.
+* Integration tests (*IntegrationTest.java) are run by Failsafe and verify how application components work together.
 
 Unit tests can be run using the Maven Surefire Plugin with the following command:
 ```console
@@ -546,7 +547,7 @@ mvnw allure:serve
 ```
 As a result, the test report should open in your browser. An excerpt from such a report is shown below:
 
-![Allure Report](readme-images/allure-report.png)
+![Allure Report](readme-images/sample-allure-report.png)
 <p align="center">
 <i>Sample Allure Report. For more information about Allure Report please visit</i>
 <a href="https://allurereport.org/"><i>https://allurereport.org/</i></a>
@@ -563,9 +564,8 @@ This approach works well with the modular structure of Hexagonal Architecture.
 * [Hexagonal Architecture Template on LibHunt](https://www.libhunt.com/r/hexagonal-architecture-template)
 
 ## Author
-Created by [Kamil Mazurek](https://kamilmazurek.pl), a Software Engineer based in Warsaw, Poland.
-
-You can also find me on my [LinkedIn profile - Kamil Mazurek](https://www.linkedin.com/in/kamil-mazurek).
+This project was created by [Kamil Mazurek](https://kamilmazurek.pl), a Software Engineer based in Warsaw, Poland.
+You can also find me on my [LinkedIn profile](https://www.linkedin.com/in/kamil-mazurek). Thanks for visiting 🙂
 
 ## Disclaimer
 
@@ -574,7 +574,6 @@ FOR EDUCATIONAL PURPOSES ONLY.
 
 THE SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
 INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE,
 THE DOCUMENTATION, OR THE USE OR OTHER DEALINGS IN THE SOFTWARE OR DOCUMENTATION.
