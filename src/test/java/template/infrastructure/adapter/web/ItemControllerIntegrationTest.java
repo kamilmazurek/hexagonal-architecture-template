@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.equalTo;
 import static template.util.TestItems.createTestItemDTOs;
 
-class ItemsControllerIntegrationTest extends AbstractIntegrationTest {
+class ItemControllerIntegrationTest extends AbstractIntegrationTest {
 
     private final ObjectWriter objectWriter = new ObjectMapper().writer();
 

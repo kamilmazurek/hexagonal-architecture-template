@@ -3,7 +3,7 @@ package template.application.domain.service;
 import org.junit.jupiter.api.Test;
 import template.application.domain.model.Item;
 import template.application.exception.ItemIdAlreadySetException;
-import template.infrastructure.adapter.persistence.ItemsRepositoryAdapter;
+import template.infrastructure.adapter.persistence.ItemRepositoryAdapter;
 
 import java.util.Optional;
 
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItems;
 
-class ItemsServiceTest {
+class ItemServiceTest {
 
     @Test
     void shouldReadItem() {
@@ -23,11 +23,11 @@ class ItemsServiceTest {
         var item = Item.builder().id(1L).name("Item A").build();
 
         //and adapter
-        var adapter = mock(ItemsRepositoryAdapter.class);
+        var adapter = mock(ItemRepositoryAdapter.class);
         when(adapter.read(item.getId())).thenReturn(Optional.of(item));
 
         //and service
-        var service = new ItemsService(adapter);
+        var service = new ItemService(adapter);
 
         //when item is requested
         var itemFromService = service.read(item.getId());
@@ -42,11 +42,11 @@ class ItemsServiceTest {
     @Test
     void shouldReadItems() {
         //given adapter
-        var adapter = mock(ItemsRepositoryAdapter.class);
+        var adapter = mock(ItemRepositoryAdapter.class);
         when(adapter.read()).thenReturn(createTestItems());
 
         //and service
-        var service = new ItemsService(adapter);
+        var service = new ItemService(adapter);
 
         //when items are requested
         var items = service.read();
@@ -61,10 +61,10 @@ class ItemsServiceTest {
     @Test
     void shouldCreateItem() {
         //given adapter
-        var adapter = mock(ItemsRepositoryAdapter.class);
+        var adapter = mock(ItemRepositoryAdapter.class);
 
         //and service
-        var service = new ItemsService(adapter);
+        var service = new ItemService(adapter);
 
         //and item
         var item = Item.builder().name("Item A").build();
@@ -79,10 +79,10 @@ class ItemsServiceTest {
     @Test
     void shouldNotCreateItem() {
         //given adapter
-        var adapter = mock(ItemsRepositoryAdapter.class);
+        var adapter = mock(ItemRepositoryAdapter.class);
 
         //and service
-        var service = new ItemsService(adapter);
+        var service = new ItemService(adapter);
 
         //and item
         var item = Item.builder().id(1L).name("Item A").build();
@@ -101,10 +101,10 @@ class ItemsServiceTest {
     @Test
     void shouldUpsertItem() {
         //given adapter
-        var adapter = mock(ItemsRepositoryAdapter.class);
+        var adapter = mock(ItemRepositoryAdapter.class);
 
         //and service
-        var service = new ItemsService(adapter);
+        var service = new ItemService(adapter);
 
         //and item
         var item = Item.builder().id(1L).name("Item A").build();
@@ -119,10 +119,10 @@ class ItemsServiceTest {
     @Test
     void shouldDeleteItem() {
         //given adapter
-        var adapter = mock(ItemsRepositoryAdapter.class);
+        var adapter = mock(ItemRepositoryAdapter.class);
 
         //and service
-        var service = new ItemsService(adapter);
+        var service = new ItemService(adapter);
 
         //and item id
         var itemId = 1L;

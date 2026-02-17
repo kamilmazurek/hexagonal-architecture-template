@@ -5,6 +5,6 @@ import template.application.usecase.Delete;
 import template.application.usecase.Read;
 import template.application.usecase.Upsert;
 
-public interface ItemsWebPort extends Create, Read, Upsert, Delete {
+public interface ItemRepositoryPort extends Create, Read, Upsert, Delete {
 
 }

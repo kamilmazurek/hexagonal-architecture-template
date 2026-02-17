@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import template.infrastructure.adapter.persistence.model.ItemEntity;
 
 @Repository
-public interface ItemsRepository extends JpaRepository<ItemEntity, Long> {
+public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
 
     @Query("select max(item.id) from ItemEntity item")
     Long findMaxID();

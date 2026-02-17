@@ -3,22 +3,18 @@ package template.infrastructure.adapter.persistence;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import template.application.domain.model.Item;
-import template.application.exception.ItemIdAlreadySetException;
 import template.infrastructure.adapter.persistence.model.ItemEntity;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItemEntities;
 import static template.util.TestItems.createTestItems;
 
-class ItemsRepositoryAdapterTest {
+class ItemRepositoryAdapterTest {
 
     @Test
     void shouldReadItem() {
@@ -26,11 +22,11 @@ class ItemsRepositoryAdapterTest {
         var item = ItemEntity.builder().id(1L).name("Item A").build();
 
         //and repository
-        var repository = mock(ItemsRepository.class);
+        var repository = mock(ItemRepository.class);
         when(repository.findById(item.getId())).thenReturn(Optional.of(item));
 
         //and adapter
-        var adapter = new ItemsRepositoryAdapter(repository, new ModelMapper());
+        var adapter = new ItemRepositoryAdapter(repository, new ModelMapper());
 
         //when item is requested
         var itemFromRepository = adapter.read(item.getId());
@@ -46,11 +42,11 @@ class ItemsRepositoryAdapterTest {
     @Test
     void shouldReadItems() {
         //given repository
-        var repository = mock(ItemsRepository.class);
+        var repository = mock(ItemRepository.class);
         when(repository.findAll()).thenReturn(createTestItemEntities());
 
         //and adapter
-        var adapter = new ItemsRepositoryAdapter(repository, new ModelMapper());
+        var adapter = new ItemRepositoryAdapter(repository, new ModelMapper());
 
         //when items are requested
         var items = adapter.read();
@@ -65,10 +61,10 @@ class ItemsRepositoryAdapterTest {
     @Test
     void shouldCreateItem() {
         //given repository
-        var repository = mock(ItemsRepository.class);
+        var repository = mock(ItemRepository.class);
 
         //and adapter
-        var adapter = new ItemsRepositoryAdapter(repository, new ModelMapper());
+        var adapter = new ItemRepositoryAdapter(repository, new ModelMapper());
 
         //and item
         var item = Item.builder().name("Item A").build();
@@ -85,10 +81,10 @@ class ItemsRepositoryAdapterTest {
     @Test
     void shouldUpsertItem() {
         //given repository
-        var repository = mock(ItemsRepository.class);
+        var repository = mock(ItemRepository.class);
 
         //and adapter
-        var adapter = new ItemsRepositoryAdapter(repository, new ModelMapper());
+        var adapter = new ItemRepositoryAdapter(repository, new ModelMapper());
 
         //and item
         var item = Item.builder().id(1L).name("Item A").build();
@@ -103,10 +99,10 @@ class ItemsRepositoryAdapterTest {
     @Test
     void shouldDeleteItem() {
         //given repository
-        var repository = mock(ItemsRepository.class);
+        var repository = mock(ItemRepository.class);
 
         //and adapter
-        var adapter = new ItemsRepositoryAdapter(repository, new ModelMapper());
+        var adapter = new ItemRepositoryAdapter(repository, new ModelMapper());
 
         //and item id
         var itemId = 1L;

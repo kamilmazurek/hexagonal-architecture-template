@@ -15,7 +15,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItemDTOs;
 
-class ItemsControllerTest {
+class ItemControllerTest {
 
     @Test
     void shouldGetItem() {
@@ -23,11 +23,11 @@ class ItemsControllerTest {
         var item = new ItemDTO().id(1L).name("Item A");
 
         //and adapter
-        var adapter = mock(ItemsWebAdapter.class);
+        var adapter = mock(ItemWebAdapter.class);
         when(adapter.getItem(1L)).thenReturn(Optional.of(item));
 
         //and controller
-        var controller = new ItemsController(adapter);
+        var controller = new ItemController(adapter);
 
         //when item is requested
         var response = controller.getItem(1L);
@@ -45,11 +45,11 @@ class ItemsControllerTest {
     @Test
     void shouldNotFindItem() {
         //given adapter
-        var adapter = mock(ItemsWebAdapter.class);
+        var adapter = mock(ItemWebAdapter.class);
         when(adapter.getItem(1L)).thenReturn(Optional.empty());
 
         //and controller
-        var controller = new ItemsController(adapter);
+        var controller = new ItemController(adapter);
 
         //when item is requested
         var response = controller.getItem(1L);
@@ -67,11 +67,11 @@ class ItemsControllerTest {
     @Test
     void shouldGetItems() {
         //given adapter
-        var adapter = mock(ItemsWebAdapter.class);
+        var adapter = mock(ItemWebAdapter.class);
         when(adapter.getItems()).thenReturn(createTestItemDTOs());
 
         //and controller
-        var controller = new ItemsController(adapter);
+        var controller = new ItemController(adapter);
 
         //when items are requested
         var response = controller.getItems();
@@ -89,10 +89,10 @@ class ItemsControllerTest {
     @Test
     void shouldCreateItemByPostRequest() {
         //given adapter
-        var adapter = mock(ItemsWebAdapter.class);
+        var adapter = mock(ItemWebAdapter.class);
 
         //and controller
-        var controller = new ItemsController(adapter);
+        var controller = new ItemController(adapter);
 
         //and item
         var item = new ItemDTO().name("Item A");
@@ -110,10 +110,10 @@ class ItemsControllerTest {
     @Test
     void shouldNotAcceptPostRequestWhenItemHasID() {
         //given adapter
-        var adapter = mock(ItemsWebAdapter.class);
+        var adapter = mock(ItemWebAdapter.class);
 
         //and controller
-        var controller = new ItemsController(adapter);
+        var controller = new ItemController(adapter);
 
         //and item
         var item = new ItemDTO().id(1L).name("Item A");
@@ -131,10 +131,10 @@ class ItemsControllerTest {
     @Test
     void shouldUpsertItemByPutRequest() {
         //given adapter
-        var adapter = mock(ItemsWebAdapter.class);
+        var adapter = mock(ItemWebAdapter.class);
 
         //and controller
-        var controller = new ItemsController(adapter);
+        var controller = new ItemController(adapter);
 
         //and item
         var item = new ItemDTO().id(1L).name("Item A");
@@ -152,10 +152,10 @@ class ItemsControllerTest {
     @Test
     void shouldNotPutItemIfHasAmbiguousID() {
         //given adapter
-        var adapter = mock(ItemsWebAdapter.class);
+        var adapter = mock(ItemWebAdapter.class);
 
         //and controller
-        var controller = new ItemsController(adapter);
+        var controller = new ItemController(adapter);
 
         //and item
         var item = new ItemDTO().id(1L).name("Item A");
@@ -173,10 +173,10 @@ class ItemsControllerTest {
     @Test
     void shouldDeleteItem() {
         //given adapter
-        var adapter = mock(ItemsWebAdapter.class);
+        var adapter = mock(ItemWebAdapter.class);
 
         //and controller
-        var controller = new ItemsController(adapter);
+        var controller = new ItemController(adapter);
 
         //and item
         var item = new ItemDTO().id(1L).name("Item A");
@@ -195,10 +195,10 @@ class ItemsControllerTest {
     @Test
     void shouldNotFindItemToDelete() {
         //given adapter
-        var adapter = mock(ItemsWebAdapter.class);
+        var adapter = mock(ItemWebAdapter.class);
 
         //and controller
-        var controller = new ItemsController(adapter);
+        var controller = new ItemController(adapter);
 
         //and item id
         var itemId = 1L;

@@ -6,16 +6,16 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import template.api.model.ItemDTO;
 import template.application.domain.model.Item;
-import template.application.port.ItemsWebPort;
+import template.application.port.ItemWebPort;
 
 import java.util.List;
 import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class ItemsWebAdapter {
+public class ItemWebAdapter {
 
-    private final ItemsWebPort port;
+    private final ItemWebPort port;
 
     private final ModelMapper mapper;
 

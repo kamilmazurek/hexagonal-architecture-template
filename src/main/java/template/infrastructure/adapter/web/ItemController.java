@@ -11,9 +11,9 @@ import java.util.Objects;
 
 @RestController
 @AllArgsConstructor
-public class ItemsController implements ItemsApi {
+public class ItemController implements ItemsApi {
 
-    private final ItemsWebAdapter adapter;
+    private final ItemWebAdapter adapter;
 
     @Override
     public ResponseEntity<ItemDTO> getItem(Long id) {

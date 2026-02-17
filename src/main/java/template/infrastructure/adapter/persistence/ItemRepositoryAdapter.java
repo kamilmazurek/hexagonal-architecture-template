@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import template.application.domain.model.Item;
-import template.application.port.ItemsRepositoryPort;
+import template.application.port.ItemRepositoryPort;
 import template.infrastructure.adapter.persistence.model.ItemEntity;
 
 import java.util.List;
@@ -13,9 +13,9 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class ItemsRepositoryAdapter implements ItemsRepositoryPort {
+public class ItemRepositoryAdapter implements ItemRepositoryPort {
 
-    private final ItemsRepository repository;
+    private final ItemRepository repository;
 
     private final ModelMapper mapper;
 

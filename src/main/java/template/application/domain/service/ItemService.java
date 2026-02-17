@@ -4,17 +4,17 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import template.application.domain.model.Item;
 import template.application.exception.ItemIdAlreadySetException;
-import template.application.port.ItemsRepositoryPort;
-import template.application.port.ItemsWebPort;
+import template.application.port.ItemRepositoryPort;
+import template.application.port.ItemWebPort;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class ItemsService implements ItemsWebPort {
+public class ItemService implements ItemWebPort {
 
-    private final ItemsRepositoryPort port;
+    private final ItemRepositoryPort port;
 
     @Override
     public Optional<Item> read(Long id) {

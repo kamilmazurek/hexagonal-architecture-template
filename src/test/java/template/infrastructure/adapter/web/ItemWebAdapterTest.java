@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import template.api.model.ItemDTO;
 import template.application.domain.model.Item;
-import template.application.port.ItemsWebPort;
+import template.application.port.ItemWebPort;
 
 import java.util.Optional;
 
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 import static template.util.TestItems.createTestItemDTOs;
 import static template.util.TestItems.createTestItems;
 
-class ItemsWebAdapterTest {
+class ItemWebAdapterTest {
 
     @Test
     void shouldGetItem() {
@@ -23,11 +23,11 @@ class ItemsWebAdapterTest {
         var item = Item.builder().id(1L).name("Item A").build();
 
         //and port
-        var port = mock(ItemsWebPort.class);
+        var port = mock(ItemWebPort.class);
         when(port.read(1L)).thenReturn(Optional.of(item));
 
         //and adapter
-        var adapter = new ItemsWebAdapter(port, new ModelMapper());
+        var adapter = new ItemWebAdapter(port, new ModelMapper());
 
         //when item is requested
         var itemFromAdapter = adapter.getItem(1L);
@@ -42,11 +42,11 @@ class ItemsWebAdapterTest {
     @Test
     void shouldGetItems() {
         //given port
-        var port = mock(ItemsWebPort.class);
+        var port = mock(ItemWebPort.class);
         when(port.read()).thenReturn(createTestItems());
 
         //and adapter
-        var adapter = new ItemsWebAdapter(port, new ModelMapper());
+        var adapter = new ItemWebAdapter(port, new ModelMapper());
 
         //when items are requested
         var items = adapter.getItems();
@@ -61,10 +61,10 @@ class ItemsWebAdapterTest {
     @Test
     void shouldCreateItemByPostRequest() {
         //given port
-        var port = mock(ItemsWebPort.class);
+        var port = mock(ItemWebPort.class);
 
         //and adapter
-        var adapter = new ItemsWebAdapter(port, new ModelMapper());
+        var adapter = new ItemWebAdapter(port, new ModelMapper());
 
         //and item
         var item = new ItemDTO().name("Item A");
@@ -79,10 +79,10 @@ class ItemsWebAdapterTest {
     @Test
     void shouldUpsertItemByPutRequest() {
         //given port
-        var port = mock(ItemsWebPort.class);
+        var port = mock(ItemWebPort.class);
 
         //and adapter
-        var adapter = new ItemsWebAdapter(port, new ModelMapper());
+        var adapter = new ItemWebAdapter(port, new ModelMapper());
 
         //and item
         var item = new ItemDTO().id(1L).name("Item A");
@@ -97,10 +97,10 @@ class ItemsWebAdapterTest {
     @Test
     void shouldDeleteItem() {
         //given port
-        var port = mock(ItemsWebPort.class);
+        var port = mock(ItemWebPort.class);
 
         //and adapter
-        var adapter = new ItemsWebAdapter(port, new ModelMapper());
+        var adapter = new ItemWebAdapter(port, new ModelMapper());
 
         //and item id
         var itemId = 1L;

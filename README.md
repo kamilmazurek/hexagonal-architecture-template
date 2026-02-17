@@ -160,13 +160,13 @@ To explain how these parts work together, let's walk through the Read use case, 
 We begin at the controller and follow the request through the adapter, into the port and domain service, down to the database, and finally back to the controller to form the API response.
 
 The API is defined using OpenAPI, which automatically generates the necessary classes during the build process.
-These classes are then used by ItemsController to handle incoming requests.
+These classes are then used by ItemController to handle incoming requests.
 ```java
 @RestController
 @AllArgsConstructor
-public class ItemsController implements ItemsApi {
+public class ItemController implements ItemsApi {
 
-    private final ItemsWebAdapter adapter;
+    private final ItemWebAdapter adapter;
 
     @Override
     public ResponseEntity<ItemDTO> getItem(Long id) {
@@ -183,14 +183,14 @@ public class ItemsController implements ItemsApi {
 }
 ```
 
-Then the request is processed by ItemsWebAdapter, which maps between the API model and the domain model, and passes data to the domain through a port.
+Then the request is processed by ItemWebAdapter, which maps between the API model and the domain model, and passes data to the domain through a port.
 This approach helps keep the domain isolated from infrastructure concerns and makes the system easier to test and maintain.
 ```java
 @Component
 @AllArgsConstructor
-public class ItemsWebAdapter {
+public class ItemWebAdapter {
 
-    private final ItemsWebPort port;
+    private final ItemWebPort port;
 
     private final ModelMapper mapper;
 
@@ -229,21 +229,21 @@ public interface Read {
 }
 ```
 
-Therefore, the ItemsWebPort interface extends the Create, Read, Upsert, and Delete interfaces, as follows:
+Therefore, the ItemWebPort interface extends the Create, Read, Upsert, and Delete interfaces, as follows:
 ```java
-public interface ItemsWebPort extends Create, Read, Upsert, Delete {
+public interface ItemWebPort extends Create, Read, Upsert, Delete {
 
 }
 ```
 
-The ItemsService class implements ItemsWebPort and delegates calls to the underlying ItemsRepositoryPort, acting as a bridge between domain logic and data access.
+The ItemService class implements ItemWebPort and delegates calls to the underlying ItemRepositoryPort, acting as a bridge between domain logic and data access.
 This is also where more complex business rules and domain logic can be added as needed.
 ```java
 @Service
 @AllArgsConstructor
-public class ItemsService implements ItemsWebPort {
+public class ItemService implements ItemWebPort {
 
-    private final ItemsRepositoryPort port;
+    private final ItemRepositoryPort port;
 
     @Override
     public Optional<Item> read(Long id) {
@@ -260,21 +260,21 @@ public class ItemsService implements ItemsWebPort {
 }
 ```
 
-Processing continues via ItemsRepositoryPort, an interface extending the basic use cases (Create, Read, Upsert, Delete) and looks like this:
+Processing continues via ItemRepositoryPort, an interface extending the basic use cases (Create, Read, Upsert, Delete) and looks like this:
 ```java
-public interface ItemsRepositoryPort extends Create, Read, Upsert, Delete {
+public interface ItemRepositoryPort extends Create, Read, Upsert, Delete {
 
 }
 ```
 
-ItemsRepositoryPort is implemented by ItemsRepositoryAdapter, which handles mapping between the domain model and database entities.
-It interacts with ItemsRepository to fetch data from the database and converts it into domain objects.
+ItemRepositoryPort is implemented by ItemRepositoryAdapter, which handles mapping between the domain model and database entities.
+It interacts with ItemRepository to fetch data from the database and converts it into domain objects.
 ```java
 @Component
 @AllArgsConstructor
-public class ItemsRepositoryAdapter implements ItemsRepositoryPort {
+public class ItemRepositoryAdapter implements ItemRepositoryPort {
 
-    private final ItemsRepository repository;
+    private final ItemRepository repository;
 
     private final ModelMapper mapper;
 
@@ -293,10 +293,10 @@ public class ItemsRepositoryAdapter implements ItemsRepositoryPort {
 }
 ```
 
-The ItemsRepository implementation is very simple and uses Spring Data JpaRepository to handle database operations:
+The ItemRepository implementation is very simple and uses Spring Data JpaRepository to handle database operations:
 ```java
 @Repository
-public interface ItemsRepository extends JpaRepository<ItemEntity, Long> {
+public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
 
     @Query("select max(item.id) from ItemEntity item")
     Long findMaxID();
