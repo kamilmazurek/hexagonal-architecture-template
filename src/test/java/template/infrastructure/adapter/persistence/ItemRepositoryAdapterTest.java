@@ -6,16 +6,19 @@ import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import template.application.domain.model.Item;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static template.infrastructure.adapter.persistence.Queries.ALTER_SEQUENCE_QUERY;
+import static template.infrastructure.adapter.persistence.Queries.CURRENT_SEQ_VAL_QUERY;
+import static template.infrastructure.adapter.persistence.Queries.LOCK_QUERY;
+import static template.infrastructure.adapter.persistence.Queries.MERGE_QUERY;
 import static template.util.TestItems.createTestItemEntities;
 import static template.util.TestItems.createTestItems;
 
@@ -43,7 +46,6 @@ class ItemRepositoryAdapterTest {
         verify(repository).findById(item.getId());
     }
 
-
     @Test
     void shouldReadItems() {
         //given repository
@@ -65,25 +67,28 @@ class ItemRepositoryAdapterTest {
 
     @Test
     void shouldCreateItem() {
-        //given repository
+        //given item
+        var item = Item.builder().name("Item A").build();
+
+        //and repository
         var repository = mock(ItemRepository.class);
 
         //and entity manager
         var entityManager = mock(EntityManager.class);
-        when(entityManager.createNativeQuery(anyString())).thenReturn(mock(Query.class));
+        var lockQuery = createLockQuery(entityManager);
 
         //and adapter
         var adapter = new ItemRepositoryAdapter(entityManager, repository, new ModelMapper());
 
-        //and item
-        var item = Item.builder().name("Item A").build();
-
         //when item is created
         adapter.create(item);
 
-        //then item is saved in repository
-        var expectedEntity = adapter.toEntity(item);
-        verify(repository).save(expectedEntity);
+        //then lock query is executed
+        verify(entityManager).createNativeQuery(LOCK_QUERY);
+        verify(lockQuery).getResultList();
+
+        //and item is saved in repository
+        verify(repository).save(adapter.toEntity(item));
     }
 
     @Test
@@ -93,19 +98,10 @@ class ItemRepositoryAdapterTest {
 
         //and entity manager
         var entityManager = mock(EntityManager.class);
-        when(entityManager.createNativeQuery("SELECT 1 FROM ITEM_SEQ_LOCK FOR UPDATE")).thenReturn(mock(Query.class));
-
-        var queryA = mock(Query.class);
-        when(queryA.setParameter(eq(1), any())).thenReturn(queryA);
-        when(queryA.setParameter(eq(2), any())).thenReturn(queryA);
-        when(entityManager.createNativeQuery("MERGE INTO item (id, name) KEY(id) VALUES (?, ?)")).thenReturn(queryA);
-
-        var queryB = mock(Query.class);
-        when(queryB.getSingleResult()).thenReturn(1L);
-        var currentSeqValQueryString = "SELECT CAST(BASE_VALUE AS BIGINT) FROM INFORMATION_SCHEMA.SEQUENCES WHERE SEQUENCE_NAME = 'ITEM_SEQ'";
-        when(entityManager.createNativeQuery(currentSeqValQueryString)).thenReturn(queryB);
-
-        when(entityManager.createNativeQuery("ALTER SEQUENCE ITEM_SEQ RESTART WITH 2")).thenReturn(mock(Query.class));
+        var lockQuery = createLockQuery(entityManager);
+        var mergeQuery = createMergeQuery(entityManager);
+        var seqQuery = createSequenceQuery(entityManager);
+        createAlterSequenceQuery(entityManager, 2L);
 
         //and adapter
         var adapter = new ItemRepositoryAdapter(entityManager, repository, new ModelMapper());
@@ -116,8 +112,18 @@ class ItemRepositoryAdapterTest {
         //when item is upserted
         adapter.upsert(item.getId(), item);
 
-        //then item is saved in repository
-        verify(entityManager, times(4)).createNativeQuery(anyString());
+        //then lock query is executed
+        verify(entityManager).createNativeQuery(LOCK_QUERY);
+        verify(lockQuery).getResultList();
+
+        // and merge query is executed
+        verify(entityManager).createNativeQuery(MERGE_QUERY);
+        verify(mergeQuery).setParameter(1, item.getId());
+        verify(mergeQuery).setParameter(2, item.getName());
+
+        //and sequence query is executed
+        verify(seqQuery).getSingleResult();
+        verify(entityManager).createNativeQuery(String.format(ALTER_SEQUENCE_QUERY, item.getId() + 1));
     }
 
     @Test
@@ -136,6 +142,32 @@ class ItemRepositoryAdapterTest {
 
         //then item is deleted from repository
         verify(repository).deleteById(itemId);
+    }
+
+    private Query createLockQuery(EntityManager em) {
+        var query = mock(Query.class);
+        when(em.createNativeQuery(LOCK_QUERY)).thenReturn(query);
+        when(query.getResultList()).thenReturn(List.of(1));
+        return query;
+    }
+
+    private Query createMergeQuery(EntityManager em) {
+        var query = mock(Query.class);
+        when(em.createNativeQuery(MERGE_QUERY)).thenReturn(query);
+        when(query.setParameter(anyInt(), any())).thenReturn(query);
+        return query;
+    }
+
+    private Query createSequenceQuery(EntityManager em) {
+        var query = mock(Query.class);
+        when(em.createNativeQuery(CURRENT_SEQ_VAL_QUERY)).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(0L);
+        return query;
+    }
+
+    private void createAlterSequenceQuery(EntityManager em, Long id) {
+        var query = mock(Query.class);
+        when(em.createNativeQuery(String.format(ALTER_SEQUENCE_QUERY, id))).thenReturn(query);
     }
 
 }
