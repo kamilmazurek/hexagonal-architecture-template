@@ -3,7 +3,6 @@ package template.infrastructure.adapter.persistence;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import template.AbstractIntegrationTest;
-import template.infrastructure.adapter.persistence.model.ItemEntity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,7 +34,7 @@ class ItemRepositoryIntegrationTest extends AbstractIntegrationTest {
     @Test
     void shouldSaveItem() {
         //given item
-        var item = ItemEntity.builder().id(4L).name("Item D").build();
+        var item = ItemEntity.builder().name("Item D").build();
 
         //when item is saved
         repository.save(item);
@@ -46,13 +45,13 @@ class ItemRepositoryIntegrationTest extends AbstractIntegrationTest {
         assertEquals(item.getName(), itemFromRepository.get().getName());
 
         //cleanup
-        repository.deleteById(4L);
+        repository.deleteById(item.getId());
     }
 
     @Test
     void shouldDeleteItem() {
         //given item
-        var item = ItemEntity.builder().id(4L).name("Item D").build();
+        var item = ItemEntity.builder().name("Item E").build();
 
         //and item is in repository
         repository.save(item);

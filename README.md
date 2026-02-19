@@ -274,6 +274,9 @@ It interacts with ItemRepository to fetch data from the database and converts it
 @AllArgsConstructor
 public class ItemRepositoryAdapter implements ItemRepositoryPort {
 
+    @PersistenceContext
+    private final EntityManager entityManager;
+    
     private final ItemRepository repository;
 
     private final ModelMapper mapper;
@@ -297,9 +300,6 @@ The ItemRepository implementation is very simple and uses Spring Data JpaReposit
 ```java
 @Repository
 public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
-
-    @Query("select max(item.id) from ItemEntity item")
-    Long findMaxID();
 
 }
 ```

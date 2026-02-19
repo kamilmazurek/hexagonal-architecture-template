@@ -89,7 +89,7 @@ class ItemControllerIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void shouldUpsertItemByPutRequest() throws JsonProcessingException {
+    void shouldInsertItemByPutRequest() throws JsonProcessingException {
         //given item
         var item = new ItemDTO().id(4L).name("Item D");
 
@@ -118,6 +118,43 @@ class ItemControllerIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void shouldUpdateItemByPutRequest() throws JsonProcessingException {
+        //given existing item
+        var item = new ItemDTO().id(4L).name("Item D");
+        given()
+                .contentType("application/json")
+                .body(item)
+                .when()
+                .put("/items/4")
+                .then()
+                .statusCode(200);
+
+        //when PUT request with updated item is sent
+        var updatedItem = new ItemDTO().id(4L).name("Item E");
+        given()
+                .contentType("application/json")
+                .body(updatedItem)
+                .when()
+                .put("/items/4")
+                .then()
+                .statusCode(200);
+
+        //then updated item can be retrieved by ID
+        when()
+                .get("/items/4")
+                .then()
+                .statusCode(200)
+                .assertThat()
+                .body(equalTo(objectWriter.writeValueAsString(updatedItem)));
+
+        //cleanup
+        when()
+                .delete("/items/4")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
     void shouldNotAcceptPutRequestWhenItemHasAmbiguousID() {
         given()
                 .contentType("application/json")
@@ -130,10 +167,8 @@ class ItemControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void shouldDeleteItem() throws JsonProcessingException {
-        //given item
+        //given existing item
         var item = new ItemDTO().id(4L).name("Item D");
-
-        //and item has been put
         given()
                 .contentType("application/json")
                 .body(item)
