@@ -33,12 +33,10 @@ Following steps provide a quick way to get started with the template:
     ```
    The following item should be returned in the response:
     ```json
-    [
-      {
-        "id": 1,
-        "name":"Item A"
-      }
-    ]
+    {
+      "id":1,
+      "name":"Item A"
+    }
     ```
 5. Modify the source code to suit your needs, rebuild the project, and run the application 🚀.
 
@@ -159,8 +157,10 @@ This implementation follows Hexagonal Architecture principles by clearly separat
 To explain how these parts work together, let's walk through the Read use case, triggered by a GET request.
 We begin at the controller and follow the request through the adapter, into the port and domain service, down to the database, and finally back to the controller to form the API response.
 
-The API is defined using OpenAPI, which automatically generates the necessary classes during the build process.
-These classes are then used by ItemController to handle incoming requests.
+The API is defined using OpenAPI, which automatically generates the necessary classes, including DTOs, during the build process.
+These classes are then used by ItemController to handle incoming requests, with the controller itself being a Spring-managed bean.
+For a deeper understanding of what Spring Beans are, including how Spring instantiates and wires components, please see [Spring Beans Explained](https://kamilmazurek.pl/spring-beans-explained).
+
 ```java
 @RestController
 @AllArgsConstructor
@@ -542,7 +542,7 @@ mvnw clean install
 Additionally, the project comes with Allure Report configured, allowing you to view test reports in your browser.
 You can generate and view the reports by running the following commands:
 ```console
-mvnw clean integration-test
+mvnw clean verify
 mvnw allure:serve
 ```
 As a result, the test report should open in your browser. An excerpt from such a report is shown below:
