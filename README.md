@@ -154,13 +154,15 @@ Each component was chosen to balance simplicity, flexibility, and robust functio
 ## How It Works
 
 This implementation follows Hexagonal Architecture principles by clearly separating different parts of the application to maintain clean boundaries and improve flexibility.
-To explain how these parts work together, let's walk through the Read use case, triggered by a GET request.
-We begin at the controller and follow the request through the adapter, into the port and domain service, down to the database, and finally back to the controller to form the API response.
-
-The API is defined using OpenAPI, which automatically generates the necessary classes, including DTOs, during the build process.
-These classes are then used by ItemController to handle incoming requests, with the controller itself being a Spring-managed bean.
+The key components include the adapters, ports, domain service, and repository, which are implemented using Spring Beans.
 For a deeper understanding of what Spring Beans are, including how Spring instantiates and wires components, please see [Spring Beans Explained](https://kamilmazurek.pl/spring-beans-explained).
 
+To explain how these parts work together, let's walk through the Read use case, triggered by a GET request.
+We start at the controller and follow the request through the adapters, ports, domain service, and repository to the database before returning to the controller to form the API response.
+
+The API is defined using OpenAPI, which automatically generates the necessary classes, including DTOs, during the build process.
+These classes are then used by ItemController, a Spring-managed bean that serves as the entry point for incoming HTTP requests.
+The controller receives the GET request, passes it through the adapter to the domain service, and returns the appropriate HTTP response:
 ```java
 @RestController
 @AllArgsConstructor
