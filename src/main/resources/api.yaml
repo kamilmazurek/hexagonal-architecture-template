@@ -88,7 +88,6 @@ components:
     itemDTO:
       type: object
       required:
-        - id
         - name
       properties:
         id:
