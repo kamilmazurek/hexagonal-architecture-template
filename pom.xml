@@ -103,7 +103,7 @@
         </dependency>
         <dependency>
             <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-junit5</artifactId>
+            <artifactId>allure-jupiter</artifactId>
             <version>${allure.version}</version>
             <scope>test</scope>
         </dependency>
