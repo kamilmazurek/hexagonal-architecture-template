@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.4</version>
+        <version>3.5.14</version>
         <relativePath/>
     </parent>
     <groupId>template</groupId>
@@ -15,12 +15,12 @@
     <description>Hexagonal Architecture Template</description>
     <properties>
         <java.version>21</java.version>
-        <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
-        <openapi-generator-maven-plugin.version>7.9.0</openapi-generator-maven-plugin.version>
-        <springdoc-openapi-starter-webmvc-ui.version>2.8.6</springdoc-openapi-starter-webmvc-ui.version>
-        <modelmapper.version>3.2.2</modelmapper.version>
-        <allure.version>2.29.0</allure.version>
-        <guava.version>33.4.8-jre</guava.version>
+        <jackson-databind-nullable.version>0.2.10</jackson-databind-nullable.version>
+        <openapi-generator-maven-plugin.version>7.22.0</openapi-generator-maven-plugin.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.8.17</springdoc-openapi-starter-webmvc-ui.version>
+        <modelmapper.version>3.2.6</modelmapper.version>
+        <allure.version>2.35.1</allure.version>
+        <guava.version>33.6.0-jre</guava.version>
     </properties>
     <profiles>
         <profile>
