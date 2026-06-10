@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
+import template.infrastructure.adapter.persistence.ItemRepository;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -22,12 +23,23 @@ public abstract class AbstractIntegrationTest {
     private EntityManager entityManager;
 
     @Autowired
+    protected ItemRepository repository;
+
+    @Autowired
     private PlatformTransactionManager transactionManager;
 
     @BeforeEach
     void setUp() {
         RestAssured.port = this.port;
-        var transactionTemplate = new TransactionTemplate(transactionManager);
-        transactionTemplate.executeWithoutResult(status -> entityManager.createNativeQuery("ALTER SEQUENCE ITEM_SEQ RESTART WITH 4").executeUpdate());
+        resetSequence();
     }
+
+    private void resetSequence() {
+        var transactionTemplate = new TransactionTemplate(transactionManager);
+        transactionTemplate.executeWithoutResult(status -> {
+            long nextSeqValue = repository.count() + 1;
+            entityManager.createNativeQuery(String.format("ALTER SEQUENCE ITEM_SEQ RESTART WITH %d", nextSeqValue)).executeUpdate();
+        });
+    }
+
 }

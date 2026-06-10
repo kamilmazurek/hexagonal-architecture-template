@@ -10,9 +10,6 @@ import static template.util.TestItems.createTestItemEntities;
 
 class ItemRepositoryIntegrationTest extends AbstractIntegrationTest {
 
-    @Autowired
-    private ItemRepository repository;
-
     @Test
     void shouldFindItem() {
         //when item is requested
