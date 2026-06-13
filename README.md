@@ -41,7 +41,7 @@ Following steps provide a quick way to get started with the template:
 5. Modify the source code to suit your needs, rebuild the project, and run the application 🚀.
 
 ## Table of contents
-* [Motivation](#motivation)
+* [Why this template?](#why-this-template)
 * [Concept](#concept)
 * [When to Use Hexagonal Architecture](#when-to-use-hexagonal-architecture)
 * [Stack](#stack)
@@ -55,11 +55,23 @@ Following steps provide a quick way to get started with the template:
 * [Author](#author)
 * [Disclaimer](#disclaimer)
 
-## Motivation
+## Why this template?
 
-My main motivation for creating this project was to have an implementation of a microservice with Hexagonal Architecture that can be reused as a template.
-This reduces the overhead of repeatedly creating a project skeleton whenever I want to build a new project.
-I considered building a flexible Maven Archetype, but it seemed too costly compared to the benefits.
+My main motivation for creating this project was to have a reusable implementation of a microservice based on Hexagonal Architecture.
+Starting a new project often involves recreating the same boilerplate structure, configuration, and tooling.
+This template reduces that overhead by providing a solid foundation for new services.
+
+To accelerate development while maintaining quality standards, the template is preconfigured with:
+* **Spring Boot 3**
+* **OpenAPI**
+* **Docker support**
+* **Integration tests**
+* **Unit tests**
+* **Allure reports**
+* **Swagger UI**
+* **Actuator endpoints**
+
+It reduces repetitive setup by providing a ready-to-use project structure, allowing developers to focus on business requirements.
 
 ## Concept
 
