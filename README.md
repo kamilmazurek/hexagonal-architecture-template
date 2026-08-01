@@ -123,6 +123,7 @@ This architecture is particularly beneficial for projects with complex business 
 If you need to keep your core logic independent from external technologies, or want to support multiple ways of interacting with your application (such as REST APIs, messaging, or batch processing),
 Hexagonal Architecture offers a flexible and extensible foundation that makes adjusting to new requirements simpler.
 Its clear separation of concerns also helps teams work more independently and speeds up development.
+For example, you can easily define an adapter to consume data that has been prepared and loaded by an [ETL Architecture pipeline](https://kamilmazurek.pl/etl-template-with-flink), keeping your core business rules completely untouched.
 
 However, for small or simple applications, or projects with very tight deadlines, the added structure of Hexagonal Architecture might be unnecessary overhead.
 In such cases, a simpler, more straightforward architecture could be easier to implement and maintain without compromising too much on quality.
