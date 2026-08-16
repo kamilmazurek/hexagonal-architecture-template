@@ -2,6 +2,9 @@
 > [Hexagonal Architecture Template](https://kamilmazurek.pl/hexagonal-architecture-template) page.
 
 # Hexagonal Architecture Template
+
+[![Build](https://github.com/kamilmazurek/hexagonal-architecture-template/actions/workflows/build.yml/badge.svg)](https://github.com/kamilmazurek/hexagonal-architecture-template/actions/workflows/build.yml)
+
 This repository contains an implementation of Java-based microservice,
 that follows the principles of Hexagonal Architecture (also known as Ports and Adapters),
 and can be used as a template.
