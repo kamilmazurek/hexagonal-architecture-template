@@ -1,7 +1,7 @@
 > This documentation is also available in an enhanced form at
-> [Hexagonal Architecture Template](https://kamilmazurek.pl/hexagonal-architecture-template) page.
+> [Hexagonal Architecture Template with Java and Spring Boot](https://kamilmazurek.pl/hexagonal-architecture-template) page.
 
-# Hexagonal Architecture Template
+# Hexagonal Architecture Template with Java and Spring Boot
 
 [![Build](https://github.com/kamilmazurek/hexagonal-architecture-template/actions/workflows/build.yml/badge.svg)](https://github.com/kamilmazurek/hexagonal-architecture-template/actions/workflows/build.yml)
 
@@ -539,7 +539,7 @@ It is recommended to limit access through authentication and authorization. Exer
 The project is covered by both unit and integration tests, with the Maven Surefire Plugin and Maven Failsafe Plugin pre-configured to run them.
 Tests are written using JUnit, Mockito, and REST Assured, covering both business logic and API layers. There are two types of tests:
 * Unit tests (*Test.java) are run by Surefire and focus on individual components like services or adapters.
-* Integration tests (*IntegrationTest.java) are run by Failsafe and verify how application components work together.
+* Integration tests (*IT.java) are run by Failsafe and verify how application components work together.
 
 Unit tests can be run using the Maven Surefire Plugin with the following command:
 ```console
@@ -571,8 +571,21 @@ As a result, the test report should open in your browser. An excerpt from such a
 <a href="https://allurereport.org/"><i>https://allurereport.org/</i></a>
 </p>
 
-These tests include unit tests, which focus on domain logic and individual components, and integration tests, which ensure that the application works correctly as a whole, including the API and database.
-This approach works well with the modular structure of Hexagonal Architecture.
+Last but not least, the project comes with integrated JaCoCo Maven Plugin for measuring code coverage.
+It is configured to automatically merge the execution data from both unit and integration tests into a single, unified report.
+
+The report is generated automatically during the verify phase, which can be run e.g. by:
+```console
+mvnw clean verify
+```
+
+After a successful build, you can view the detailed coverage results by navigating to the following file and opening it in your browser:
+```
+target/site/jacoco/index.html
+```
+This lets you easily check whether critical paths of the application were thoroughly tested.
+
+Overall, this combination of unit tests, which focus on isolated domain logic, and integration tests, which verify the application as a whole, including the API and database, works well with the modular structure of Hexagonal Architecture.
 
 ## Additional resources
 * [Hexagonal Architecture Template with Java and Spring Boot](https://kamilmazurek.pl/hexagonal-architecture-template)

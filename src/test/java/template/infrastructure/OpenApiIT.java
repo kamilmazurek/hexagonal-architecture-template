@@ -1,12 +1,12 @@
 package template.infrastructure;
 
 import org.junit.jupiter.api.Test;
-import template.AbstractIntegrationTest;
+import template.AbstractIT;
 
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.containsString;
 
-class OpenApiIntegrationTest extends AbstractIntegrationTest {
+class OpenApiIT extends AbstractIT {
 
     @Test
     void shouldReturnResponseFromOpenApiEndpoint() {

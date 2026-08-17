@@ -1,12 +1,12 @@
 package template.infrastructure;
 
 import org.junit.jupiter.api.Test;
-import template.AbstractIntegrationTest;
+import template.AbstractIT;
 
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.containsString;
 
-class ActuatorIntegrationTest extends AbstractIntegrationTest {
+class ActuatorIT extends AbstractIT {
 
     @Test
     void shouldReturnResponseFromActuatorEndpoint() {
