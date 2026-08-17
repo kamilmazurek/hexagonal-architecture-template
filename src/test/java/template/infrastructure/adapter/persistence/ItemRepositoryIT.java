@@ -1,14 +1,13 @@
 package template.infrastructure.adapter.persistence;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import template.AbstractIntegrationTest;
+import template.AbstractIT;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static template.util.TestItems.createTestItemEntities;
 
-class ItemRepositoryIntegrationTest extends AbstractIntegrationTest {
+class ItemRepositoryIT extends AbstractIT {
 
     @Test
     void shouldFindItem() {

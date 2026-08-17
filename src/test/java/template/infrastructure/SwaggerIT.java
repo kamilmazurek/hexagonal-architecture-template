@@ -1,11 +1,11 @@
 package template.infrastructure;
 
 import org.junit.jupiter.api.Test;
-import template.AbstractIntegrationTest;
+import template.AbstractIT;
 
 import static io.restassured.RestAssured.when;
 
-class SwaggerIntegrationTest extends AbstractIntegrationTest {
+class SwaggerIT extends AbstractIT {
 
     @Test
     void shouldReturnResponseFromSwaggerEndpoint() {

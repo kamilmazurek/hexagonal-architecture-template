@@ -1,5 +1,8 @@
 package template.infrastructure.adapter.persistence;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class Queries {
 
     public static final String MERGE_QUERY = "MERGE INTO item (id, name) KEY(id) VALUES (?, ?)";

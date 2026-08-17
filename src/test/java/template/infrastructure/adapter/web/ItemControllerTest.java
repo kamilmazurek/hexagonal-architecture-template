@@ -13,6 +13,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.*;
 import static template.util.TestItems.createTestItemDTOs;
 
 class ItemControllerTest {
@@ -36,7 +37,7 @@ class ItemControllerTest {
         assertEquals(item, response.getBody());
 
         //and OK status is returned
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(OK, response.getStatusCode());
 
         //and adapter was involved in retrieving the data
         verify(adapter).getItem(1L);
@@ -58,7 +59,7 @@ class ItemControllerTest {
         assertNull(response.getBody());
 
         //and Not Found status is returned
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(NOT_FOUND, response.getStatusCode());
 
         //and adapter was involved in retrieving the data
         verify(adapter).getItem(1L);
@@ -80,7 +81,7 @@ class ItemControllerTest {
         assertEquals(createTestItemDTOs(), response.getBody());
 
         //and OK status is returned
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(OK, response.getStatusCode());
 
         //and adapter was involved in retrieving the data
         verify(adapter).getItems();
@@ -101,7 +102,7 @@ class ItemControllerTest {
         var response = controller.postItem(item);
 
         //then OK status is returned
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(OK, response.getStatusCode());
 
         //and adapter was involved in saving the data
         verify(adapter).postItem(item);
@@ -122,7 +123,7 @@ class ItemControllerTest {
         var response = controller.postItem(item);
 
         //then Bad Request status is returned
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(BAD_REQUEST, response.getStatusCode());
 
         //and adapter was not involved in saving the data
         verify(adapter, never()).postItem(any());
@@ -143,10 +144,31 @@ class ItemControllerTest {
         var response = controller.putItem(1L, item);
 
         //then OK status is returned
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(OK, response.getStatusCode());
 
         //and adapter was involved in saving the data
         verify(adapter).putItem(1L, item);
+    }
+
+    @Test
+    void shouldNotPutItemIfItemDtoHasNoId() {
+        //given adapter
+        var adapter = mock(ItemWebAdapter.class);
+
+        //and controller
+        var controller = new ItemController(adapter);
+
+        //and item WITHOUT an id
+        var item = new ItemDTO().name("Item A"); // ID is null
+
+        //when PUT request is received but DTO lacks an ID
+        var response = controller.putItem(1L, item);
+
+        //then Bad Request status is returned
+        assertEquals(BAD_REQUEST, response.getStatusCode());
+
+        //and adapter was not involved in saving the data
+        verify(adapter, never()).putItem(any(), any());
     }
 
     @Test
@@ -164,7 +186,7 @@ class ItemControllerTest {
         var response = controller.putItem(2L, item);
 
         //then Bad Request status is returned
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(BAD_REQUEST, response.getStatusCode());
 
         //and adapter was not involved in saving the data
         verify(adapter, never()).putItem(any(), any());
@@ -186,7 +208,7 @@ class ItemControllerTest {
         var response = controller.deleteItem(item.getId());
 
         //then OK status is returned
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(OK, response.getStatusCode());
 
         //and adapter was involved in deleting the data
         verify(adapter).deleteItem(item.getId());
@@ -207,7 +229,7 @@ class ItemControllerTest {
         var response = controller.deleteItem(itemId);
 
         //and Not Found status is returned
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(NOT_FOUND, response.getStatusCode());
 
         //and adapter was not involved in deleting the data
         verify(adapter, never()).deleteItem(any());
