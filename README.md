@@ -1,7 +1,7 @@
 > This documentation is also available in an enhanced form at
-> [Hexagonal Architecture Template with Java and Spring Boot](https://kamilmazurek.pl/hexagonal-architecture-template) page.
+> [Hexagonal Architecture Template](https://kamilmazurek.pl/hexagonal-architecture-template) page.
 
-# Hexagonal Architecture Template with Java and Spring Boot
+# Hexagonal Architecture Template
 
 [![Build](https://github.com/kamilmazurek/hexagonal-architecture-template/actions/workflows/build.yml/badge.svg)](https://github.com/kamilmazurek/hexagonal-architecture-template/actions/workflows/build.yml)
 
