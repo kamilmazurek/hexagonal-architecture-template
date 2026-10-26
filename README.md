@@ -66,7 +66,7 @@ Starting a new project often involves recreating the same boilerplate structure,
 This template reduces that overhead by providing a solid foundation for new services.
 
 To accelerate development while maintaining quality standards, the template is preconfigured with:
-* **Spring Boot 3**
+* **Spring Boot 4**
 * **OpenAPI**
 * **Docker support**
 * **Integration tests**

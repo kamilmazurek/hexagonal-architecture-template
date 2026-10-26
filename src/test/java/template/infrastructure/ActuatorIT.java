@@ -5,6 +5,7 @@ import template.AbstractIT;
 
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 
 class ActuatorIT extends AbstractIT {
 
@@ -23,7 +24,7 @@ class ActuatorIT extends AbstractIT {
                 .get("/actuator/health")
                 .then()
                 .statusCode(200)
-                .body(containsString("{\"status\":\"UP\"}"));
+                .body("status", equalTo("UP"));
     }
 
 }
