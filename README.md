@@ -586,6 +586,15 @@ target/site/jacoco/index.html
 ```
 This lets you easily check whether critical paths of the application were thoroughly tested.
 
+The project also includes a smoke test script that verifies the packaged application in its deployment forms.
+It builds the JAR file, starts the application, waits until it is healthy and sends requests to the REST API, Actuator and Swagger endpoints, checking the responses.
+Then it builds the Docker image, runs the container and repeats the same checks, additionally verifying that the container runs as a non-root user:
+```console
+./smoke-test.sh
+```
+Deployments can also be tested separately with `./smoke-test.sh jar` or `./smoke-test.sh docker`. The script requires Bash, curl and Docker (on Windows, it can be run with Git Bash).
+Smoke tests are run in the CI pipeline as well, after the build.
+
 Overall, this combination of unit tests, which focus on isolated domain logic, and integration tests, which verify the application as a whole, including the API and database, works well with the modular structure of Hexagonal Architecture.
 
 ## Additional resources
