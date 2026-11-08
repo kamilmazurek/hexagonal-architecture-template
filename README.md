@@ -214,11 +214,10 @@ public class ItemWebAdapter {
     private final ModelMapper mapper;
 
     public Optional<ItemDTO> getItem(String id) {
-        return Optional.ofNullable(id)
-                .filter(ItemId::isValid)
-                .map(ItemId::new)
-                .flatMap(port::read)
-                .map(this::toDTO);
+        if (!ItemId.isValid(id)) {
+            return Optional.empty();
+        }
+        return port.read(new ItemId(id)).map(this::toDTO);
     }
 
     public List<ItemDTO> getItems() {
