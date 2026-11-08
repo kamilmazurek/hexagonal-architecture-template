@@ -1,22 +1,21 @@
 package template.infrastructure.adapter.persistence;
 
 import com.google.common.annotations.VisibleForTesting;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.AllArgsConstructor;
+import org.hibernate.exception.ConstraintViolationException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import template.application.domain.model.Item;
+import template.application.domain.model.ItemId;
+import template.application.exception.ItemAlreadyExistsException;
 import template.application.port.ItemRepositoryPort;
 
 import java.util.List;
 import java.util.Optional;
-
-import static template.infrastructure.adapter.persistence.Queries.ALTER_SEQUENCE_QUERY;
-import static template.infrastructure.adapter.persistence.Queries.CURRENT_SEQ_VAL_QUERY;
-import static template.infrastructure.adapter.persistence.Queries.LOCK_QUERY;
-import static template.infrastructure.adapter.persistence.Queries.MERGE_QUERY;
 
 @Component
 @AllArgsConstructor
@@ -30,8 +29,8 @@ public class ItemRepositoryAdapter implements ItemRepositoryPort {
     private final ModelMapper mapper;
 
     @Override
-    public Optional<Item> read(Long id) {
-        return repository.findById(id).map(this::toDomainObject);
+    public Optional<Item> read(ItemId id) {
+        return repository.findById(id.value()).map(this::toDomainObject);
     }
 
     @Override
@@ -42,37 +41,23 @@ public class ItemRepositoryAdapter implements ItemRepositoryPort {
     @Override
     @Transactional
     public void create(Item item) {
-        acquireH2Lock();
-        var itemEntity = toEntity(item);
-        repository.save(itemEntity);
+        try {
+            entityManager.persist(toEntity(item));
+            entityManager.flush();
+        } catch (EntityExistsException | ConstraintViolationException e) {
+            throw new ItemAlreadyExistsException(item.getId());
+        }
     }
 
     @Override
     @Transactional
-    public void upsert(Long itemId, Item item) {
-        acquireH2Lock();
-        entityManager.createNativeQuery(MERGE_QUERY).setParameter(1, itemId).setParameter(2, item.getName()).executeUpdate();
-        syncSequence(itemId);
-    }
-
-    private void acquireH2Lock() {
-        //solution for development and testing on H2, but it may need adjustments for production databases
-        entityManager.createNativeQuery(LOCK_QUERY).getResultList();
-    }
-
-    private void syncSequence(Long insertedId) {
-        var currentSeqVal = (Number) entityManager.createNativeQuery(CURRENT_SEQ_VAL_QUERY).getSingleResult();
-
-        if (insertedId < currentSeqVal.longValue()) {
-            return;
-        }
-
-        entityManager.createNativeQuery(String.format(ALTER_SEQUENCE_QUERY,  insertedId + 1)).executeUpdate();
+    public void upsert(Item item) {
+        repository.save(toEntity(item));
     }
 
     @Override
-    public void delete(Long id) {
-        repository.deleteById(id);
+    public void delete(ItemId id) {
+        repository.deleteById(id.value());
     }
 
     @VisibleForTesting

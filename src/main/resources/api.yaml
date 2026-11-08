@@ -23,7 +23,7 @@ paths:
                   $ref: '#/components/schemas/itemDTO'
     post:
       operationId: postItem
-      description: Creates new item with the request content and ID set by server
+      description: Creates new item with the request content and ID derived from its name, e.g. "Item A" gets ID "item-a"
       tags:
         - items
       requestBody:
@@ -36,6 +36,8 @@ paths:
           description: Successful response
         '400':
           description: Bad request
+        '409':
+          description: Item with ID derived from the name already exists
   /items/{itemId}:
     get:
       operationId: getItem
@@ -55,7 +57,7 @@ paths:
           description: Not found
     put:
       operationId: putItem
-      description: Creates new item with given ID or replaces target item with the request content
+      description: Creates new item or replaces target item with the request content and given ID, which must be derived from its name
       parameters:
         - $ref: '#/components/parameters/itemId'
       tags:
@@ -91,7 +93,8 @@ components:
         - name
       properties:
         id:
-          type: long
+          type: string
+          maxLength: 100
         name:
           type: string
   parameters:
@@ -101,4 +104,5 @@ components:
         description: ID of an item
         required: true
         schema:
-          type: long
+          type: string
+          maxLength: 100

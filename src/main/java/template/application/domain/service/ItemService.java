@@ -3,7 +3,10 @@ package template.application.domain.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import template.application.domain.model.Item;
+import template.application.domain.model.ItemId;
+import template.application.domain.util.ItemIdGenerator;
 import template.application.exception.ItemIdAlreadySetException;
+import template.application.exception.ItemIdMismatchException;
 import template.application.port.ItemRepositoryPort;
 import template.application.port.ItemWebPort;
 
@@ -17,7 +20,7 @@ public class ItemService implements ItemWebPort {
     private final ItemRepositoryPort port;
 
     @Override
-    public Optional<Item> read(Long id) {
+    public Optional<Item> read(ItemId id) {
         return port.read(id);
     }
 
@@ -32,16 +35,22 @@ public class ItemService implements ItemWebPort {
             throw new ItemIdAlreadySetException(item.getId());
         }
 
-        port.create(item);
+        port.create(item.toBuilder().id(ItemIdGenerator.fromName(item.getName())).build());
     }
 
     @Override
-    public void upsert(Long itemId, Item item) {
-        port.upsert(itemId, item);
+    public void upsert(Item item) {
+        var expectedId = ItemIdGenerator.fromName(item.getName());
+
+        if (!expectedId.equals(item.getId())) {
+            throw new ItemIdMismatchException(expectedId, item.getId());
+        }
+
+        port.upsert(item);
     }
 
     @Override
-    public void delete(Long itemId) {
+    public void delete(ItemId itemId) {
         port.delete(itemId);
     }
 

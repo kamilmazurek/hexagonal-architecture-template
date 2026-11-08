@@ -99,24 +99,27 @@ run_checks() {
 
     # items API - default profile starts with no items
     expect 200 GET /items "" '[]'
-    expect 404 GET /items/1
+    expect 404 GET /items/smoke-item-a
 
     # create
     expect 200 POST /items '{"name":"Smoke Item A"}'
-    expect 200 GET /items/1 "" '"id":1' '"name":"Smoke Item A"'
-    expect 400 POST /items '{"id":5,"name":"Item with ID"}'
+    expect 200 GET /items/smoke-item-a "" '"id":"smoke-item-a"' '"name":"Smoke Item A"'
+    expect 409 POST /items '{"name":"smoke item a"}' 'Item with id smoke-item-a already exists'
+    expect 400 POST /items '{"id":"item-with-id","name":"Item with ID"}'
+    expect 400 POST /items '{"name":"!!!"}'
 
     # insert and update
-    expect 200 PUT /items/2 '{"id":2,"name":"Smoke Item B"}'
-    expect 200 PUT /items/2 '{"id":2,"name":"Smoke Item B updated"}'
-    expect 200 GET /items/2 "" '"name":"Smoke Item B updated"'
-    expect 400 PUT /items/3 '{"id":4,"name":"Ambiguous ID"}'
-    expect 200 GET /items "" '"Smoke Item A"' '"Smoke Item B updated"'
+    expect 200 PUT /items/smoke-item-b '{"id":"smoke-item-b","name":"Smoke Item B"}'
+    expect 200 PUT /items/smoke-item-b '{"id":"smoke-item-b","name":"SMOKE ITEM B"}'
+    expect 200 GET /items/smoke-item-b "" '"name":"SMOKE ITEM B"'
+    expect 400 PUT /items/smoke-item-c '{"id":"smoke-item-d","name":"Smoke Item C"}'
+    expect 400 PUT /items/smoke-item-c '{"id":"smoke-item-c","name":"Other Name"}'
+    expect 200 GET /items "" '"Smoke Item A"' '"SMOKE ITEM B"'
 
     # delete
-    expect 200 DELETE /items/1
-    expect 404 GET /items/1
-    expect 404 DELETE /items/1
+    expect 200 DELETE /items/smoke-item-a
+    expect 404 GET /items/smoke-item-a
+    expect 404 DELETE /items/smoke-item-a
 }
 
 build_jar() {

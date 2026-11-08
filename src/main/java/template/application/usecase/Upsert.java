@@ -4,6 +4,6 @@ import template.application.domain.model.Item;
 
 public interface Upsert {
 
-    void upsert(Long itemId, Item item);
+    void upsert(Item item);
 
 }
