@@ -12,10 +12,10 @@ class ItemRepositoryIT extends AbstractIT {
     @Test
     void shouldFindItem() {
         //when item is requested
-        var item = repository.findById(1L);
+        var item = repository.findById("item-a");
 
         //then expected item is returned
-        assertEquals(ItemEntity.builder().id(1L).name("Item A").build(), item.get());
+        assertEquals(ItemEntity.builder().id("item-a").name("Item A").build(), item.get());
     }
 
     @Test
@@ -30,15 +30,13 @@ class ItemRepositoryIT extends AbstractIT {
     @Test
     void shouldSaveItem() {
         //given item
-        var item = ItemEntity.builder().name("Item D").build();
+        var item = ItemEntity.builder().id("item-d").name("Item D").build();
 
         //when item is saved
         repository.save(item);
 
         //then item can be retrieved from repository
-        var itemFromRepository = repository.findById(item.getId());
-        assertEquals(item.getId(), itemFromRepository.get().getId());
-        assertEquals(item.getName(), itemFromRepository.get().getName());
+        assertEquals(item, repository.findById(item.getId()).get());
 
         //cleanup
         repository.deleteById(item.getId());
@@ -47,7 +45,7 @@ class ItemRepositoryIT extends AbstractIT {
     @Test
     void shouldDeleteItem() {
         //given item
-        var item = ItemEntity.builder().name("Item E").build();
+        var item = ItemEntity.builder().id("item-e").name("Item E").build();
 
         //and item is in repository
         repository.save(item);
@@ -58,15 +56,6 @@ class ItemRepositoryIT extends AbstractIT {
 
         //then item is no longer in repository
         assertTrue(repository.findById(item.getId()).isEmpty());
-    }
-
-    @Test
-    void shouldFindMaxID() {
-        //when repository is queried for max ID
-        var maxID = repository.findMaxID();
-
-        //then max ID is returned
-        assertEquals(3L, maxID);
     }
 
 }

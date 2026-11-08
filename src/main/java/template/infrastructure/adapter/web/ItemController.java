@@ -16,7 +16,7 @@ public class ItemController implements ItemsApi {
     private final ItemWebAdapter adapter;
 
     @Override
-    public ResponseEntity<ItemDTO> getItem(Long id) {
+    public ResponseEntity<ItemDTO> getItem(String id) {
         return adapter.getItem(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -36,17 +36,17 @@ public class ItemController implements ItemsApi {
     }
 
     @Override
-    public ResponseEntity<Void> putItem(Long itemId, ItemDTO itemDTO) {
+    public ResponseEntity<Void> putItem(String itemId, ItemDTO itemDTO) {
         if (!hasValidId(itemId, itemDTO)) {
             return ResponseEntity.badRequest().build();
         }
 
-        adapter.putItem(itemId, itemDTO);
+        adapter.putItem(itemDTO);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<Void> deleteItem(Long itemId) {
+    public ResponseEntity<Void> deleteItem(String itemId) {
         if (adapter.getItem(itemId).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -55,7 +55,7 @@ public class ItemController implements ItemsApi {
         return ResponseEntity.ok().build();
     }
 
-    private boolean hasValidId(Long itemId, ItemDTO itemDTO) {
+    private boolean hasValidId(String itemId, ItemDTO itemDTO) {
         return itemDTO.getId() != null && Objects.equals(itemId, itemDTO.getId());
     }
 

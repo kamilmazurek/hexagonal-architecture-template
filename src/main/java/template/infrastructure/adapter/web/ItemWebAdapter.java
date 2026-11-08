@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import template.api.model.ItemDTO;
 import template.application.domain.model.Item;
+import template.application.domain.model.ItemId;
 import template.application.port.ItemWebPort;
 
 import java.util.List;
@@ -19,8 +20,12 @@ public class ItemWebAdapter {
 
     private final ModelMapper mapper;
 
-    public Optional<ItemDTO> getItem(Long id) {
-        return port.read(id).map(this::toDTO);
+    public Optional<ItemDTO> getItem(String id) {
+        return Optional.ofNullable(id)
+                .filter(ItemId::isValid)
+                .map(ItemId::new)
+                .flatMap(port::read)
+                .map(this::toDTO);
     }
 
     public List<ItemDTO> getItems() {
@@ -31,12 +36,12 @@ public class ItemWebAdapter {
         port.create(toDomainObject(itemDTO));
     }
 
-    public void putItem(Long itemId, ItemDTO itemDTO) {
-        port.upsert(itemId, toDomainObject(itemDTO));
+    public void putItem(ItemDTO itemDTO) {
+        port.upsert(toDomainObject(itemDTO));
     }
 
-    public void deleteItem(Long itemId) {
-        port.delete(itemId);
+    public void deleteItem(String itemId) {
+        port.delete(new ItemId(itemId));
     }
 
     @VisibleForTesting

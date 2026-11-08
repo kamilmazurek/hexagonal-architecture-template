@@ -33,12 +33,12 @@ Following steps provide a quick way to get started with the template:
     ```
 4. Verify that the application is running by sending a GET request to the following URL (you can simply open it in a browser):
     ```console
-    http://localhost:8080/items/1
+    http://localhost:8080/items/item-a
     ```
    The following item should be returned in the response:
     ```json
     {
-      "id":1,
+      "id":"item-a",
       "name":"Item A"
     }
     ```
@@ -188,7 +188,7 @@ public class ItemController implements ItemsApi {
     private final ItemWebAdapter adapter;
 
     @Override
-    public ResponseEntity<ItemDTO> getItem(Long id) {
+    public ResponseEntity<ItemDTO> getItem(String id) {
         return adapter.getItem(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -213,8 +213,12 @@ public class ItemWebAdapter {
 
     private final ModelMapper mapper;
 
-    public Optional<ItemDTO> getItem(Long id) {
-        return port.read(id).map(this::toDTO);
+    public Optional<ItemDTO> getItem(String id) {
+        return Optional.ofNullable(id)
+                .filter(ItemId::isValid)
+                .map(ItemId::new)
+                .flatMap(port::read)
+                .map(this::toDTO);
     }
 
     public List<ItemDTO> getItems() {
@@ -241,7 +245,7 @@ As a template, this implementation includes interfaces for basic use cases such 
 ```java
 public interface Read {
 
-    Optional<Item> read(Long id);
+    Optional<Item> read(ItemId id);
 
     List<Item> read();
 
@@ -265,7 +269,7 @@ public class ItemService implements ItemWebPort {
     private final ItemRepositoryPort port;
 
     @Override
-    public Optional<Item> read(Long id) {
+    public Optional<Item> read(ItemId id) {
         return port.read(id);
     }
 
@@ -301,8 +305,8 @@ public class ItemRepositoryAdapter implements ItemRepositoryPort {
     private final ModelMapper mapper;
 
     @Override
-    public Optional<Item> read(Long id) {
-        return repository.findById(id).map(this::toDomainObject);
+    public Optional<Item> read(ItemId id) {
+        return repository.findById(id.value()).map(this::toDomainObject);
     }
 
     @Override
@@ -318,7 +322,7 @@ public class ItemRepositoryAdapter implements ItemRepositoryPort {
 The ItemRepository implementation is very simple and uses Spring Data JpaRepository to handle database operations:
 ```java
 @Repository
-public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
+public interface ItemRepository extends JpaRepository<ItemEntity, String> {
 
 }
 ```
@@ -385,18 +389,18 @@ The response should include items from the database. If no items are found, an e
 []
 ```
 
-Items can be added to the database using the <strong>POST method</strong>. For example, "Item A" can be added with the following curl command on Linux:
+Items can be added to the database using the <strong>POST method</strong>. The item ID is derived from its name, e.g., "Item A" gets ID "item-a". For example, "Item A" can be added with the following curl command on Linux:
 ```console
 curl -i -X POST http://localhost:8080/items \
   -H "Content-Type: application/json" \
   -d '{"name":"Item A"}'
 ```
 
-Items can also be added or updated with the PUT method. For example, item with ID 1 can be added or updated using this curl command on Linux:
+Alternatively, you can create or update an item using a PUT request, as long as the ID in the URL matches the ID generated from the item's name:
 ```console
-curl -i -X PUT http://localhost:8080/items/1 \
+curl -i -X PUT http://localhost:8080/items/item-a \
   -H "Content-Type: application/json" \
-  -d '{"id":1, "name":"Item A"}'
+  -d '{"id":"item-a", "name":"Item A"}'
 ```
 
 Once an item is successfully added, it will be returned in response to a GET http://localhost:8080/items request:
@@ -406,19 +410,19 @@ http://localhost:8080/items
 ```json
 [
   {
-    "id": 1,
+    "id": "item-a",
     "name":"Item A"
   }
 ]
 ```  
 
-An item can also be retrieved by ID using the items/{ID} path, e.g., by sending a GET http://localhost:8080/items/1 request:
+An item can also be retrieved by ID using the items/{ID} path, e.g., by sending a GET http://localhost:8080/items/item-a request:
 ```console
-http://localhost:8080/items/1
+http://localhost:8080/items/item-a
 ```
 ```json
 {
-  "id": 1,
+  "id": "item-a",
   "name":"Item A"
 }
 ```
@@ -431,23 +435,23 @@ http://localhost:8080/items
 ```json
 [
   {
-    "id":1,
+    "id":"item-a",
     "name":"Item A"
   },
   {
-    "id":2,
+    "id":"item-b",
     "name":"Item B"
   },
   {
-    "id":3,
+    "id":"item-c",
     "name":"Item C"
   }
 ]
 ```
 
-Items can be removed using the DELETE method. For example, to delete the item with ID 1, use the following curl command on Linux:
+Items can be removed using the DELETE method. For example, to delete the item with ID "item-a", use the following curl command on Linux:
 ```console
-curl -i -X DELETE http://localhost:8080/items/1
+curl -i -X DELETE http://localhost:8080/items/item-a
 ```
 
 Alternatively, these operations (GET, POST, PUT, DELETE) can be performed via Swagger, accessible at  http://localhost:8080/swagger-ui/index.html.

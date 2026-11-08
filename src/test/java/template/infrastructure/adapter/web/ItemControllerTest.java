@@ -21,17 +21,17 @@ class ItemControllerTest {
     @Test
     void shouldGetItem() {
         //given item
-        var item = new ItemDTO().id(1L).name("Item A");
+        var item = new ItemDTO().id("item-a").name("Item A");
 
         //and adapter
         var adapter = mock(ItemWebAdapter.class);
-        when(adapter.getItem(1L)).thenReturn(Optional.of(item));
+        when(adapter.getItem("item-a")).thenReturn(Optional.of(item));
 
         //and controller
         var controller = new ItemController(adapter);
 
         //when item is requested
-        var response = controller.getItem(1L);
+        var response = controller.getItem("item-a");
 
         //then response containing expected item is returned
         assertEquals(item, response.getBody());
@@ -40,20 +40,20 @@ class ItemControllerTest {
         assertEquals(OK, response.getStatusCode());
 
         //and adapter was involved in retrieving the data
-        verify(adapter).getItem(1L);
+        verify(adapter).getItem("item-a");
     }
 
     @Test
     void shouldNotFindItem() {
         //given adapter
         var adapter = mock(ItemWebAdapter.class);
-        when(adapter.getItem(1L)).thenReturn(Optional.empty());
+        when(adapter.getItem("item-a")).thenReturn(Optional.empty());
 
         //and controller
         var controller = new ItemController(adapter);
 
         //when item is requested
-        var response = controller.getItem(1L);
+        var response = controller.getItem("item-a");
 
         //then response contains no item
         assertNull(response.getBody());
@@ -62,7 +62,7 @@ class ItemControllerTest {
         assertEquals(NOT_FOUND, response.getStatusCode());
 
         //and adapter was involved in retrieving the data
-        verify(adapter).getItem(1L);
+        verify(adapter).getItem("item-a");
     }
 
     @Test
@@ -117,7 +117,7 @@ class ItemControllerTest {
         var controller = new ItemController(adapter);
 
         //and item
-        var item = new ItemDTO().id(1L).name("Item A");
+        var item = new ItemDTO().id("item-a").name("Item A");
 
         //when POST request with item containing ID is received
         var response = controller.postItem(item);
@@ -138,16 +138,16 @@ class ItemControllerTest {
         var controller = new ItemController(adapter);
 
         //and item
-        var item = new ItemDTO().id(1L).name("Item A");
+        var item = new ItemDTO().id("item-a").name("Item A");
 
         //when PUT request with item is handled
-        var response = controller.putItem(1L, item);
+        var response = controller.putItem("item-a", item);
 
         //then OK status is returned
         assertEquals(OK, response.getStatusCode());
 
         //and adapter was involved in saving the data
-        verify(adapter).putItem(1L, item);
+        verify(adapter).putItem(item);
     }
 
     @Test
@@ -162,13 +162,13 @@ class ItemControllerTest {
         var item = new ItemDTO().name("Item A"); // ID is null
 
         //when PUT request is received but DTO lacks an ID
-        var response = controller.putItem(1L, item);
+        var response = controller.putItem("item-a", item);
 
         //then Bad Request status is returned
         assertEquals(BAD_REQUEST, response.getStatusCode());
 
         //and adapter was not involved in saving the data
-        verify(adapter, never()).putItem(any(), any());
+        verify(adapter, never()).putItem(any());
     }
 
     @Test
@@ -180,16 +180,16 @@ class ItemControllerTest {
         var controller = new ItemController(adapter);
 
         //and item
-        var item = new ItemDTO().id(1L).name("Item A");
+        var item = new ItemDTO().id("item-a").name("Item A");
 
         //when PUT request with ambiguous ID is received
-        var response = controller.putItem(2L, item);
+        var response = controller.putItem("item-b", item);
 
         //then Bad Request status is returned
         assertEquals(BAD_REQUEST, response.getStatusCode());
 
         //and adapter was not involved in saving the data
-        verify(adapter, never()).putItem(any(), any());
+        verify(adapter, never()).putItem(any());
     }
 
     @Test
@@ -201,7 +201,7 @@ class ItemControllerTest {
         var controller = new ItemController(adapter);
 
         //and item
-        var item = new ItemDTO().id(1L).name("Item A");
+        var item = new ItemDTO().id("item-a").name("Item A");
         when(adapter.getItem(item.getId())).thenReturn(Optional.of(item));
 
         //when DELETE request is handled
@@ -223,7 +223,7 @@ class ItemControllerTest {
         var controller = new ItemController(adapter);
 
         //and item id
-        var itemId = 1L;
+        var itemId = "item-a";
 
         //when DELETE request is handled
         var response = controller.deleteItem(itemId);

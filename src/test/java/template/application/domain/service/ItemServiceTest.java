@@ -2,13 +2,17 @@ package template.application.domain.service;
 
 import org.junit.jupiter.api.Test;
 import template.application.domain.model.Item;
+import template.application.domain.model.ItemId;
+import template.application.exception.InvalidItemNameException;
 import template.application.exception.ItemIdAlreadySetException;
+import template.application.exception.ItemIdMismatchException;
 import template.infrastructure.adapter.persistence.ItemRepositoryAdapter;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -20,7 +24,7 @@ class ItemServiceTest {
     @Test
     void shouldReadItem() {
         //given item
-        var item = Item.builder().id(1L).name("Item A").build();
+        var item = Item.builder().id(new ItemId("item-a")).name("Item A").build();
 
         //and adapter
         var adapter = mock(ItemRepositoryAdapter.class);
@@ -59,7 +63,7 @@ class ItemServiceTest {
     }
 
     @Test
-    void shouldCreateItem() {
+    void shouldCreateItemWithIdDerivedFromName() {
         //given adapter
         var adapter = mock(ItemRepositoryAdapter.class);
 
@@ -72,12 +76,12 @@ class ItemServiceTest {
         //when item is created
         service.create(item);
 
-        //then adapter is involved in saving the item
-        verify(adapter).create(item);
+        //then adapter is involved in saving the item with ID derived from its name
+        verify(adapter).create(Item.builder().id(new ItemId("item-a")).name("Item A").build());
     }
 
     @Test
-    void shouldNotCreateItem() {
+    void shouldNotCreateItemWithId() {
         //given adapter
         var adapter = mock(ItemRepositoryAdapter.class);
 
@@ -85,17 +89,35 @@ class ItemServiceTest {
         var service = new ItemService(adapter);
 
         //and item
-        var item = Item.builder().id(1L).name("Item A").build();
+        var item = Item.builder().id(new ItemId("item-a")).name("Item A").build();
 
         //when item is created
         var exception = assertThrows(ItemIdAlreadySetException.class, () -> service.create(item));
 
         //then exception is thrown
-        var expectedMessage = "Item ID must be null when creating a new item. Expected null so the adapter can assign a new ID, but received: 1.";
+        var expectedMessage = "Item ID must be null when creating a new item. Expected null so the ID can be derived from the item name, but received: item-a.";
         assertEquals(expectedMessage, exception.getMessage());
 
         //and adapter was not involved in saving the item
-        verify(adapter, never()).create(item);
+        verify(adapter, never()).create(any());
+    }
+
+    @Test
+    void shouldNotCreateItemWithInvalidName() {
+        //given adapter
+        var adapter = mock(ItemRepositoryAdapter.class);
+
+        //and service
+        var service = new ItemService(adapter);
+
+        //and item with name that produces no ID
+        var item = Item.builder().name("!!!").build();
+
+        //when item is created
+        assertThrows(InvalidItemNameException.class, () -> service.create(item));
+
+        //then adapter was not involved in saving the item
+        verify(adapter, never()).create(any());
     }
 
     @Test
@@ -107,13 +129,35 @@ class ItemServiceTest {
         var service = new ItemService(adapter);
 
         //and item
-        var item = Item.builder().id(1L).name("Item A").build();
+        var item = Item.builder().id(new ItemId("item-a")).name("Item A").build();
 
         //when item is upserted
-        service.upsert(item.getId(), item);
+        service.upsert(item);
 
         //then adapter is involved in saving the item
-        verify(adapter).upsert(item.getId(), item);
+        verify(adapter).upsert(item);
+    }
+
+    @Test
+    void shouldNotUpsertItemWhenIdIsNotDerivedFromName() {
+        //given adapter
+        var adapter = mock(ItemRepositoryAdapter.class);
+
+        //and service
+        var service = new ItemService(adapter);
+
+        //and item
+        var item = Item.builder().id(new ItemId("item-a")).name("Item B").build();
+
+        //when item is upserted
+        var exception = assertThrows(ItemIdMismatchException.class, () -> service.upsert(item));
+
+        //then exception is thrown
+        var expectedMessage = "Item ID must be derived from the item name. Expected: item-b, but received: item-a.";
+        assertEquals(expectedMessage, exception.getMessage());
+
+        //and adapter was not involved in saving the item
+        verify(adapter, never()).upsert(any());
     }
 
     @Test
@@ -125,7 +169,7 @@ class ItemServiceTest {
         var service = new ItemService(adapter);
 
         //and item id
-        var itemId = 1L;
+        var itemId = new ItemId("item-a");
 
         //when item is deleted
         service.delete(itemId);
